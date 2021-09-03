@@ -3,6 +3,7 @@
 Automatically clicks the left mouse button.
 Compatible with Steam game Cookie Clicker.
 
+Student project. Please be aware of bugs :)
 WIP (Work in Progress)
 
 
