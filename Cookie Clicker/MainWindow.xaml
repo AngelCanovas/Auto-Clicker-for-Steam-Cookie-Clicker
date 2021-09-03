@@ -7,13 +7,16 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TextBlock x:Name="tittle" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,20,0,20" FontWeight="Bold" FontSize="24" TextDecorations="{x:Null}"><Run Language="es-es" Text="Auto Clicker for Coockie Clicker"/></TextBlock>
+        <TextBlock x:Name="tittle" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,20,0,20" FontWeight="Bold" FontSize="24" TextDecorations="{x:Null}"><Run Language="es-es" Text="Auto Clicker for Cookie Clicker"/></TextBlock>
         <Button x:Name="start" Content="Start" Margin="541,80,50,300" Click="startAutoClicker"/>
         <Button x:Name="stop" Content="Stop" Margin="541,300,50,80" Click="stopAutoClicker"/>
-        <TextBox x:Name="sleepMillis" Text="0" PreviewTextInput="NumberValidationTextBox" TextWrapping="Wrap" Margin="250,0,400,0" VerticalAlignment="Center"/>
-        <Slider x:Name="slider" Margin="30,0,600,0" Maximum="50" ValueChanged="changeSleepTime" SmallChange="0" Cursor="" Value="-1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+        <TextBox x:Name="sleepMillis" Text="0" PreviewTextInput="NumberValidationTextBox" TextWrapping="Wrap" Margin="340,262,310,0" VerticalAlignment="Top"/>
+        <Slider x:Name="slider" Margin="340,216,290,0" Maximum="500" ValueChanged="changeSleepTime" SmallChange="1" Cursor="" Value="-1" VerticalAlignment="Top"/>
         <Button x:Name="testAutoClicker" Content="Test" HorizontalAlignment="Left" Margin="541,0,0,0" VerticalAlignment="Center" Height="34" Width="69" Click="incrementTotalClicks"/>
         <TextBox x:Name="sumClicks" HorizontalAlignment="Left" Margin="630,211,0,0" Text="0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBlock x:Name="delayTextBlock" HorizontalAlignment="Left" Margin="80,150,2,0" Text="Initial delay (millis before clicks):" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
+        <TextBox x:Name="initialDelayTextBox" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="365,150,0,0" Text="2000" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="16"/>
+        <TextBlock x:Name="delayBetweenClicksTextBlock" HorizontalAlignment="Left" Margin="80,225,0,0" Text="Initial delay (before clicks):" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
 
     </Grid>
 </Window>

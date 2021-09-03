@@ -25,14 +25,54 @@ namespace Cookie_Clicker
     public partial class MainWindow : Window
     {
         int sleepTimeMillis = 0;
+        int initialDelay = 2000;
         bool isAutoClickerStart = false;
         long totalClicks = 0;
+        private AutoClicker clicker;
+        Thread Clicker;
 
         public MainWindow()
         {
             InitializeComponent();
 
         }
+
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        static extern bool SetCursorPos(int x, int y);
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
+
+        public const int MOUSEEVENTF_LEFTDOWN = 0x02;
+        public const int MOUSEEVENTF_LEFTUP = 0x04;
+
+        //This simulates a left mouse click
+        public static void LeftMouseClick(int xpos, int ypos)
+        {
+            SetCursorPos(xpos, ypos);
+            mouse_event(MOUSEEVENTF_LEFTDOWN, xpos, ypos, 0, 0);
+            mouse_event(MOUSEEVENTF_LEFTUP, xpos, ypos, 0, 0);
+        }
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool GetCursorPos(ref Win32Point pt);
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct Win32Point
+        {
+            public Int32 X;
+            public Int32 Y;
+        };
+        public static Point GetMousePosition()
+        {
+            var w32Mouse = new Win32Point();
+            GetCursorPos(ref w32Mouse);
+
+            return new Point(w32Mouse.X, w32Mouse.Y);
+        }
+
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -51,19 +91,26 @@ namespace Cookie_Clicker
             if (this.isAutoClickerStart) return;
 
             this.isAutoClickerStart = true;
-            Thread.Sleep(2000);
+            Thread.Sleep(initialDelay);
 
-            while (this.isAutoClickerStart)
+            while (isAutoClickerStart)
             {
-                Mouse.Click(MouseButton.Left);
+                doAClick();
                 Thread.Sleep(sleepTimeMillis);
             }
 
+            stopAutoClicker(null, null);
         }
 
         private void stopAutoClicker(object sender, RoutedEventArgs e)
         {
             this.isAutoClickerStart = false;
+        }
+
+        private void doAClick()
+        {
+            Point currentMousePosition = GetMousePosition();
+            LeftMouseClick((int)currentMousePosition.X, (int)currentMousePosition.Y);
         }
 
         private void incrementTotalClicks(object sender, RoutedEventArgs e)
