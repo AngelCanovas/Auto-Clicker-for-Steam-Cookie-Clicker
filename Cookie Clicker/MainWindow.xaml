@@ -1,0 +1,19 @@
+﻿<Window x:Class="Cookie_Clicker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Cookie_Clicker"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <TextBlock x:Name="tittle" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,20,0,20" FontWeight="Bold" FontSize="24" TextDecorations="{x:Null}"><Run Language="es-es" Text="Auto Clicker for Coockie Clicker"/></TextBlock>
+        <Button x:Name="start" Content="Start" Margin="541,80,50,300" Click="startAutoClicker"/>
+        <Button x:Name="stop" Content="Stop" Margin="541,300,50,80" Click="stopAutoClicker"/>
+        <TextBox x:Name="sleepMillis" Text="0" PreviewTextInput="NumberValidationTextBox" TextWrapping="Wrap" Margin="250,0,400,0" VerticalAlignment="Center"/>
+        <Slider x:Name="slider" Margin="30,0,600,0" Maximum="50" ValueChanged="changeSleepTime" SmallChange="0" Cursor="" Value="-1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+        <Button x:Name="testAutoClicker" Content="Test" HorizontalAlignment="Left" Margin="541,0,0,0" VerticalAlignment="Center" Height="34" Width="69" Click="incrementTotalClicks"/>
+        <TextBox x:Name="sumClicks" HorizontalAlignment="Left" Margin="630,211,0,0" Text="0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+
+    </Grid>
+</Window>
