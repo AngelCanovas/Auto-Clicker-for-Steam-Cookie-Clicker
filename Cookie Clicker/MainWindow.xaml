@@ -5,18 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cookie_Clicker"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Loaded="MainWindow_Loaded">
     <Grid>
-        <TextBlock x:Name="tittle" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,20,0,20" FontWeight="Bold" FontSize="24" TextDecorations="{x:Null}"><Run Language="es-es" Text="Auto Clicker for Cookie Clicker"/></TextBlock>
-        <Button x:Name="start" Content="Start" Margin="541,80,50,300" Click="startAutoClicker"/>
-        <Button x:Name="stop" Content="Stop" Margin="541,300,50,80" Click="stopAutoClicker"/>
-        <TextBox x:Name="sleepMillis" Text="0" PreviewTextInput="NumberValidationTextBox" TextWrapping="Wrap" Margin="340,262,310,0" VerticalAlignment="Top"/>
-        <Slider x:Name="slider" Margin="340,216,290,0" Maximum="500" ValueChanged="changeSleepTime" SmallChange="1" Cursor="" Value="-1" VerticalAlignment="Top"/>
-        <Button x:Name="testAutoClicker" Content="Test" HorizontalAlignment="Left" Margin="541,0,0,0" VerticalAlignment="Center" Height="34" Width="69" Click="incrementTotalClicks"/>
-        <TextBox x:Name="sumClicks" HorizontalAlignment="Left" Margin="630,211,0,0" Text="0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBlock x:Name="delayTextBlock" HorizontalAlignment="Left" Margin="80,150,2,0" Text="Initial delay (millis before clicks):" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
-        <TextBox x:Name="initialDelayTextBox" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="365,150,0,0" Text="2000" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="16"/>
-        <TextBlock x:Name="delayBetweenClicksTextBlock" HorizontalAlignment="Left" Margin="80,225,0,0" Text="Initial delay (before clicks):" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
+        <TextBlock x:Name="tittle" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,20,0,20" FontWeight="Bold" FontSize="24" TextDecorations="{x:Null}" VerticalAlignment="Top" Foreground="#FF006DAC"><Run Language="es-es" Text="Auto Clicker for Cookie Clicker"/></TextBlock>
+        <Button x:Name="start" Content="Start" Margin="50,75,541,305" Click="startAutoClicker"/>
+        <Button x:Name="stop" Content="Stop" Margin="541,75,50,305" Click="stopAutoClicker"/>
+        <TextBox x:Name="sleepMillis" Text="15" PreviewTextInput="NumberValidationTextBox" TextWrapping="Wrap" Margin="350,0,0,30" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" MinWidth="50" MinHeight="10"/>
+        <Slider x:Name="slider" Margin="350,0,350,60" Maximum="500" ValueChanged="changeSleepTime" SmallChange="1" Cursor="" Value="15" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" MinWidth="50" MinHeight="10" Minimum="1"/>
+        <Button x:Name="testAutoClicker" Content="Test" HorizontalAlignment="Left" Margin="541,173,0,0" VerticalAlignment="Top" Height="34" Width="69" Click="incrementTotalClicks"/>
+        <TextBox x:Name="sumClicks" HorizontalAlignment="Left" Margin="630,181,0,0" Text="0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBlock x:Name="delayTextBlock" HorizontalAlignment="Left" Margin="50,300,0,0" Text="Initial delay (millis before Start):" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
+        <TextBox x:Name="initialDelayTextBox" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="350,300,0,0" Text="2000" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="16"/>
+        <TextBlock x:Name="delayBetweenClicksTextBlock" HorizontalAlignment="Left" Margin="50,0,0,50" Text="Delay between clicks (millis):" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="16" FontWeight="Bold"/>
+        <TextBlock x:Name="toggleKeyTextBlock" HorizontalAlignment="Left" Margin="50,250,0,0" Text="Key to toggle on/off:" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" FontSize="16"/>
+        <TextBox x:Name="keyNameTextBox" TextWrapping="Wrap" Margin="350,250,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16" MinWidth="50" MinHeight="10"/>
+        <Button x:Name="setKeyButton" Content="Set" HorizontalAlignment="Left" Margin="550,250,0,0" VerticalAlignment="Top" FontSize="16" Padding="10,1,10,1" Click="setKeyToggle"/>
+        <Button x:Name="clearKeyButton" Content="Clear" HorizontalAlignment="Left" Margin="650,250,0,0" VerticalAlignment="Top" FontSize="16" Padding="10,1,10,1" Click="clearKeyToggle"/>
 
     </Grid>
 </Window>
