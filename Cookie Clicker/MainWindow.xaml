@@ -42,7 +42,7 @@
         <CheckBox x:Name="barrelRollCheckBox" Content="Barrel roll to clean wrinklers" HorizontalAlignment="Left" Margin="50,175,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Checked="checkBarrelRoll" Unchecked="uncheckBarrelRoll"/>
         <TextBlock x:Name="barrelRollTextBlock" HorizontalAlignment="Left" Margin="310,160,0,0" Text="Do it every (seconds)" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14"/>
         <TextBox x:Name="barrelRollTextBox" Text="{Binding BarrelRollDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="470,158,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" MinWidth="50" MinHeight="10" PreviewTextInput="NumberValidationTextBox"/>
-        <TextBlock x:Name="radiousTextBlock" HorizontalAlignment="Left" Margin="310,200,0,0" Text="Circle radious (pixels)" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14"/>
-        <TextBox x:Name="radiousTextBox" Text="{Binding BarrelRollRadious, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="470,200,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MinHeight="10" MinWidth="50" FontSize="14"/>
+        <TextBlock x:Name="radiusTextBlock" HorizontalAlignment="Left" Margin="310,200,0,0" Text="Circle radius (pixels)" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14"/>
+        <TextBox x:Name="radiusTextBox" Text="{Binding BarrelRollRadius, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="470,200,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MinHeight="10" MinWidth="50" FontSize="14" PreviewTextInput="NumberValidationTextBox"/>
     </Grid>
 </Window>

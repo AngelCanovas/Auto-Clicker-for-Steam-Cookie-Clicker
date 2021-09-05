@@ -20,7 +20,7 @@ namespace Cookie_Clicker
         public double XPosition { get; set; }
         public double YPosition { get; set; }
         public int BarrelRollDelay { get; set; }
-        public int BarrelRollRadious { get; set; }
+        public int BarrelRollRadius { get; set; }
         public bool IsBarrelRollCheck { get; set; }
 
         bool canAutoClickerStart = false;
@@ -84,7 +84,7 @@ namespace Cookie_Clicker
             XPosition = 290;
             YPosition = 420;
             BarrelRollDelay = 30;
-            BarrelRollRadious = 170;
+            BarrelRollRadius = 170;
             IsBarrelRollCheck = false;
         }
 
@@ -305,7 +305,7 @@ namespace Cookie_Clicker
 
         private void doABarrelRoll(object sender, RoutedEventArgs e)
         {
-            // rotationRadious = (int) XPosition / 2;
+            // rotationRadius = (int) XPosition / 2;
             int increment = 360 / rotationSteps;
             double theta = 0;
             double xPos, yPos = 0;
@@ -314,8 +314,8 @@ namespace Cookie_Clicker
             for (int i = 0; i < 360; i += increment)
             {
                 theta = i * Math.PI / 180;
-                xPos = XPosition + BarrelRollRadious * Math.Cos(theta);
-                yPos = YPosition + BarrelRollRadious * Math.Sin(theta);
+                xPos = XPosition + BarrelRollRadius * Math.Cos(theta);
+                yPos = YPosition + BarrelRollRadius * Math.Sin(theta);
 
                 for (int j=0; j<rotationCliksPerStep; j++)
                 {
