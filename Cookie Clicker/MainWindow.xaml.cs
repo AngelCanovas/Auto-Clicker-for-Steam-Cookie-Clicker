@@ -62,8 +62,8 @@ namespace Cookie_Clicker
         {
             InitializeComponent();
             this.DataContext = this;
-            SleepTimeMillis = 15;
-            InitialDelay = 100;
+            SleepTimeMillis = 20;
+            InitialDelay = 200;
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -78,6 +78,7 @@ namespace Cookie_Clicker
         }
         protected override void OnClosed(EventArgs e)
         {
+            canAutoClickerStart = false;
             _source.RemoveHook(HwndHook);
             UnregisterHotKey(_windowHandle, HOTKEY_ID);
             base.OnClosed(e);
@@ -94,23 +95,29 @@ namespace Cookie_Clicker
                     {
                         case HOTKEY_ID:
                             int vkey = ((int)lParam >> 16) & 0xFFFF;
-                            if (vkey == KeyInterop.VirtualKeyFromKey(toggleKey))
+
+                            // Stop clicker if Windows key press (Fail safe)
+                            // Dont work? >>>>> Investigate <<<<<<
+                            if (vkey == KeyInterop.VirtualKeyFromKey(Key.LWin))
+                            {
+                                Stop();
+                                clearKeyToggle(null, null);
+                            }
+                            else if (vkey == KeyInterop.VirtualKeyFromKey(toggleKey))
                             {
                                 // Key Press Logic
                                 if (canAutoClickerStart)
                                 {
                                     if (toggleAutoClickerState)
                                     {
+                                        // if clicker status is running (true), toggle to false to stop it 
                                         Stop();
                                     }
                                     else
                                     {
+                                        // if clicker is not running (false), start it
                                         Start();
                                     }
-                                }
-                                else
-                                {
-
                                 }
                             }
                             handled = true;
@@ -175,28 +182,29 @@ namespace Cookie_Clicker
 
         public void Start()
         {
+            toggleAutoClickerState = true; // allow clicker ejecution
             Thread.Sleep(InitialDelay);
+
+            // new clicker thread creation
             Clicker = new Thread(MyAutoClicker);
             Clicker.IsBackground = true;
             Clicker.Start();
-            toggleAutoClickerState = true;
         }
 
         public void Stop()
         {
+            toggleAutoClickerState = false; // stops clicker ejecution
             if (Clicker != null)
             {
-                Clicker.Interrupt(); // kill the thread?
+                Clicker.Join(); // wait for the thread to finish
             }
-            toggleAutoClickerState = false;
         }
 
         public void MyAutoClicker()
         {
             try
             {
-                bool state = true;
-                while (state)
+                while (toggleAutoClickerState)
                 {
                     Thread.Sleep(SleepTimeMillis);
                     doAClick();
@@ -204,7 +212,7 @@ namespace Cookie_Clicker
             }
             catch
             {
-                // Nothing
+                // End silently if error
             }
         }
 

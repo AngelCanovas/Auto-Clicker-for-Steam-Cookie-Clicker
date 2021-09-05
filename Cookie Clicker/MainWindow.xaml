@@ -8,9 +8,9 @@
         Title="MainWindow" Height="450" Width="800" Loaded="MainWindow_Loaded" ResizeMode="NoResize">
     <Grid>
         <TextBlock x:Name="tittleTextBox" TextWrapping="Wrap" HorizontalAlignment="Left" Margin="100,20,0,0" FontWeight="Bold" FontSize="30" TextDecorations="{x:Null}" VerticalAlignment="Top" Foreground="#FF006DAC" Text="Auto Clicker for Steam Cookie Clicker"/>
-        <TextBox x:Name="sleepMillisTextBox" Text="{Binding SleepTimeMillis, Mode=TwoWay}" PreviewTextInput="NumberValidationTextBox" TextWrapping="Wrap" Margin="350,0,0,40" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" MinWidth="50" MinHeight="10"/>
+        <TextBox x:Name="sleepMillisTextBox" Text="{Binding SleepTimeMillis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" TextWrapping="Wrap" Margin="350,0,0,40" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" MinWidth="50" MinHeight="10"/>
         <TextBlock x:Name="delayTextBlock" HorizontalAlignment="Left" Margin="50,300,0,0" Text="Initial delay" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
-        <TextBox x:Name="initialDelayTextBox" Text="{Binding InitialDelay, Mode=TwoWay}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="350,300,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="16"/>
+        <TextBox x:Name="initialDelayTextBox" Text="{Binding InitialDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="350,300,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="16"/>
         <TextBlock x:Name="delayBetweenClicksTextBlock" HorizontalAlignment="Left" Margin="50,0,0,40" Text="Delay between clicks" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="16" FontWeight="Bold"/>
         <TextBlock x:Name="toggleKeyTextBlock" HorizontalAlignment="Left" Margin="50,220,0,0" Text="Key to toggle on/off:" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" FontSize="16"/>
         <TextBox x:Name="keyNameTextBox" TextWrapping="Wrap" Margin="350,235,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16" MinWidth="50" MinHeight="10"/>
