@@ -15,7 +15,12 @@ namespace Cookie_Clicker
     {
         public int SleepTimeMillis { get; set; }
         public int InitialDelay { get; set; }
+        public bool IsFixPosition { get; set; }
+        public double XPosition { get; set; }
+        public double YPosition { get; set; }
+
         bool canAutoClickerStart = false;
+        bool canSetGoldenCookiePosition = false;
         bool toggleAutoClickerState = false;
 
         private IntPtr _windowHandle;
@@ -64,6 +69,9 @@ namespace Cookie_Clicker
             this.DataContext = this;
             SleepTimeMillis = 20;
             InitialDelay = 200;
+            IsFixPosition = false;
+            XPosition = 300;
+            YPosition = 400;
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -133,6 +141,7 @@ namespace Cookie_Clicker
             var window = Window.GetWindow(this);
             window.KeyDown += HandleKeyPress;
         }
+
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
             if (isKeyToggleAllowed)
@@ -148,8 +157,15 @@ namespace Cookie_Clicker
 
         private void doAClick()
         {
-            Point currentMousePosition = GetMousePosition();
-            LeftMouseClick((int)currentMousePosition.X, (int)currentMousePosition.Y);
+            if (IsFixPosition)
+            {
+                LeftMouseClick((int) XPosition, (int) YPosition);
+            }
+            else
+            {
+                Point currentMousePosition = GetMousePosition();
+                LeftMouseClick((int)currentMousePosition.X, (int)currentMousePosition.Y);
+            }            
         }
         public static Point GetMousePosition()
         {
@@ -220,6 +236,26 @@ namespace Cookie_Clicker
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void resetGoldenCookiePosition(object sender, RoutedEventArgs e)
+        {
+            XPosition = 300 / 1920 * SystemParameters.PrimaryScreenWidth;
+            YPosition = 400 / 1080 * SystemParameters.PrimaryScreenHeight;
+            xPositionTextBox.Text = XPosition.ToString();
+            yPositionTextBox.Text = YPosition.ToString();
+            IsFixPosition = false;
+            fixPositionCheckBox.IsChecked = false;
+        }
+
+        private void checkFixPosition(object sender, RoutedEventArgs e)
+        {
+            IsFixPosition = true;
+        }
+
+        private void uncheckFixPosition(object sender, RoutedEventArgs e)
+        {
+            IsFixPosition = false;
         }
     }
 }

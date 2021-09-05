@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Cookie_Clicker"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Loaded="MainWindow_Loaded" ResizeMode="NoResize">
-    <Grid>
+    <Grid x:Name="myGrid">
         <TextBlock x:Name="tittleTextBox" TextWrapping="Wrap" HorizontalAlignment="Left" Margin="100,20,0,0" FontWeight="Bold" FontSize="30" TextDecorations="{x:Null}" VerticalAlignment="Top" Foreground="#FF006DAC" Text="Auto Clicker for Steam Cookie Clicker"/>
         <TextBox x:Name="sleepMillisTextBox" Text="{Binding SleepTimeMillis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" TextWrapping="Wrap" Margin="350,0,0,40" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" MinWidth="50" MinHeight="10"/>
         <TextBlock x:Name="delayTextBlock" HorizontalAlignment="Left" Margin="50,300,0,0" Text="Initial delay" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
@@ -31,6 +31,12 @@
         <TextBlock x:Name="AuthorName" HorizontalAlignment="Right" Margin="0,0,50,79" Text="Angel Canovas" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="16"/>
         <TextBlock x:Name="GitlabTittle" HorizontalAlignment="Right" Margin="0,0,180,30" Text="Gitlab:" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="20" FontWeight="Bold"/>
         <TextBlock HorizontalAlignment="Right" Margin="0,0,50,34" Text="@AngelCanovas" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="14"/>
-        <TextBlock x:Name="versionTextBox" HorizontalAlignment="Right" Margin="0,30,50,0" Text="V 1.2" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
+        <TextBlock x:Name="versionTextBox" HorizontalAlignment="Right" Margin="0,30,50,0" Text="V 1.3" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
+        <TextBlock x:Name="xPositionLabel" HorizontalAlignment="Left" Margin="315,102,0,0" Text="(Pixels) Width:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" RenderTransformOrigin="-0.12,0.557"/>
+        <CheckBox x:Name="fixPositionCheckBox" Content="Fix position for Golden cookie" HorizontalAlignment="Left" Margin="50,100,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Checked="checkFixPosition" Unchecked="uncheckFixPosition"/>
+        <TextBox x:Name="xPositionTextBox" Text="{Binding XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="410,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.502,0.868" MinWidth="50" FontSize="14"/>
+        <TextBlock x:Name="yPositionLabel" HorizontalAlignment="Left" Margin="500,102,0,0" Text="Heigth:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14"/>
+        <TextBox x:Name="yPositionTextBox" Text="{Binding YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="550,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" MinWidth="50"/>
+        <Button x:Name="clearPositionButton" Content="Reset" HorizontalAlignment="Left" Margin="650,96,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Padding="10,5,10,5" Click="resetGoldenCookiePosition"/>
     </Grid>
 </Window>
