@@ -1,4 +1,4 @@
-# AutoClicker for Cookie Clicker
+# Auto Clicker for Steam Cookie Clicker
 
 Automatically clicks the left mouse button.
 
