@@ -13,13 +13,11 @@ namespace Cookie_Clicker
     /// </summary>
     public partial class MainWindow : Window
     {
-        int sleepTimeMillis = 15;
-        int initialDelay = 2000;
+        public int SleepTimeMillis { get; set; }
+        public int InitialDelay { get; set; }
         bool canAutoClickerStart = false;
         bool toggleAutoClickerState = false;
-        long totalClicks = 0;
 
-        private AutoClicker clicker;
         private IntPtr _windowHandle;
         private HwndSource _source;
 
@@ -29,9 +27,8 @@ namespace Cookie_Clicker
         private const uint MOD_CONTROL = 0x0002; //CTRL
         private const uint MOD_SHIFT = 0x0004; //SHIFT
         private const uint MOD_WIN = 0x0008; //WINDOWS
-
-        public const int MOUSEEVENTF_LEFTDOWN = 0x02;
-        public const int MOUSEEVENTF_LEFTUP = 0x04;
+        public const int MOUSEEVENTF_LEFTDOWN = 0x02; // Mouse left click down
+        public const int MOUSEEVENTF_LEFTUP = 0x04; // Mouse left click up
 
         Thread Clicker;
         bool isKeyToggleAllowed = false;
@@ -60,9 +57,13 @@ namespace Cookie_Clicker
             public Int32 Y;
         };
 
+        // MAIN
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = this;
+            SleepTimeMillis = 15;
+            InitialDelay = 100;
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -82,6 +83,7 @@ namespace Cookie_Clicker
             base.OnClosed(e);
         }
 
+        // The magic function
         private IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             const int WM_HOTKEY = 0x0312;
@@ -132,42 +134,10 @@ namespace Cookie_Clicker
                 toggleKey = e.Key;
                 keyNameTextBox.Text = toggleKey.ToString();
                 RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_NONE, (uint) KeyInterop.VirtualKeyFromKey(toggleKey));
+                isKeyToggleAllowed = false;
             }
             return;
          }
-
-        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
-        {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
-        }
-
-        private void changeSleepTime(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            this.sleepTimeMillis = (int) e.NewValue;
-            sleepMillis.Text = this.sleepTimeMillis.ToString();
-        }
-
-        private void startAutoClicker(object sender, RoutedEventArgs e)
-        {
-            if (this.canAutoClickerStart) return;
-
-            this.canAutoClickerStart = true;
-            Thread.Sleep(initialDelay);
-
-            while (canAutoClickerStart)
-            {
-                doAClick();
-                Thread.Sleep(sleepTimeMillis);
-            }
-
-            stopAutoClicker(null, null);
-        }
-
-        private void stopAutoClicker(object sender, RoutedEventArgs e)
-        {
-            this.canAutoClickerStart = false;
-        }
 
         private void doAClick()
         {
@@ -190,11 +160,6 @@ namespace Cookie_Clicker
             mouse_event(MOUSEEVENTF_LEFTUP, xpos, ypos, 0, 0);
         }
 
-        private void incrementTotalClicks(object sender, RoutedEventArgs e)
-        {
-            totalClicks++;
-            sumClicks.Text = totalClicks.ToString();
-        }
 
         private void setKeyToggle(object sender, RoutedEventArgs e)
         {
@@ -210,6 +175,7 @@ namespace Cookie_Clicker
 
         public void Start()
         {
+            Thread.Sleep(InitialDelay);
             Clicker = new Thread(MyAutoClicker);
             Clicker.IsBackground = true;
             Clicker.Start();
@@ -232,7 +198,7 @@ namespace Cookie_Clicker
                 bool state = true;
                 while (state)
                 {
-                    Thread.Sleep(sleepTimeMillis);
+                    Thread.Sleep(SleepTimeMillis);
                     doAClick();
                 }
             }
@@ -240,6 +206,12 @@ namespace Cookie_Clicker
             {
                 // Nothing
             }
+        }
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }

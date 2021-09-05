@@ -5,22 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cookie_Clicker"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="MainWindow_Loaded">
+        Title="MainWindow" Height="450" Width="800" Loaded="MainWindow_Loaded" ResizeMode="NoResize">
     <Grid>
-        <TextBlock x:Name="tittle" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,20,0,20" FontWeight="Bold" FontSize="24" TextDecorations="{x:Null}" VerticalAlignment="Top" Foreground="#FF006DAC"><Run Language="es-es" Text="Auto Clicker for Cookie Clicker"/></TextBlock>
-        <Button x:Name="start" Content="Start" Margin="50,75,541,305" Click="startAutoClicker"/>
-        <Button x:Name="stop" Content="Stop" Margin="541,75,50,305" Click="stopAutoClicker"/>
-        <TextBox x:Name="sleepMillis" Text="15" PreviewTextInput="NumberValidationTextBox" TextWrapping="Wrap" Margin="350,0,0,30" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" MinWidth="50" MinHeight="10"/>
-        <Slider x:Name="slider" Margin="350,0,350,60" Maximum="500" ValueChanged="changeSleepTime" SmallChange="1" Cursor="" Value="15" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" MinWidth="50" MinHeight="10" Minimum="1"/>
-        <Button x:Name="testAutoClicker" Content="Test" HorizontalAlignment="Left" Margin="541,173,0,0" VerticalAlignment="Top" Height="34" Width="69" Click="incrementTotalClicks"/>
-        <TextBox x:Name="sumClicks" HorizontalAlignment="Left" Margin="630,181,0,0" Text="0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBlock x:Name="delayTextBlock" HorizontalAlignment="Left" Margin="50,300,0,0" Text="Initial delay (millis before Start):" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
-        <TextBox x:Name="initialDelayTextBox" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="350,300,0,0" Text="2000" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="16"/>
-        <TextBlock x:Name="delayBetweenClicksTextBlock" HorizontalAlignment="Left" Margin="50,0,0,50" Text="Delay between clicks (millis):" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="16" FontWeight="Bold"/>
-        <TextBlock x:Name="toggleKeyTextBlock" HorizontalAlignment="Left" Margin="50,250,0,0" Text="Key to toggle on/off:" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" FontSize="16"/>
-        <TextBox x:Name="keyNameTextBox" TextWrapping="Wrap" Margin="350,250,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16" MinWidth="50" MinHeight="10"/>
-        <Button x:Name="setKeyButton" Content="Set" HorizontalAlignment="Left" Margin="550,250,0,0" VerticalAlignment="Top" FontSize="16" Padding="10,1,10,1" Click="setKeyToggle"/>
-        <Button x:Name="clearKeyButton" Content="Clear" HorizontalAlignment="Left" Margin="650,250,0,0" VerticalAlignment="Top" FontSize="16" Padding="10,1,10,1" Click="clearKeyToggle"/>
-
+        <TextBlock x:Name="tittleTextBox" TextWrapping="Wrap" HorizontalAlignment="Left" Margin="100,20,0,0" FontWeight="Bold" FontSize="30" TextDecorations="{x:Null}" VerticalAlignment="Top" Foreground="#FF006DAC" Text="Auto Clicker for Steam Cookie Clicker"/>
+        <TextBox x:Name="sleepMillisTextBox" Text="{Binding SleepTimeMillis, Mode=TwoWay}" PreviewTextInput="NumberValidationTextBox" TextWrapping="Wrap" Margin="350,0,0,40" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" MinWidth="50" MinHeight="10"/>
+        <TextBlock x:Name="delayTextBlock" HorizontalAlignment="Left" Margin="50,300,0,0" Text="Initial delay" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
+        <TextBox x:Name="initialDelayTextBox" Text="{Binding InitialDelay, Mode=TwoWay}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="350,300,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="16"/>
+        <TextBlock x:Name="delayBetweenClicksTextBlock" HorizontalAlignment="Left" Margin="50,0,0,40" Text="Delay between clicks" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="16" FontWeight="Bold"/>
+        <TextBlock x:Name="toggleKeyTextBlock" HorizontalAlignment="Left" Margin="50,220,0,0" Text="Key to toggle on/off:" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" FontSize="16"/>
+        <TextBox x:Name="keyNameTextBox" TextWrapping="Wrap" Margin="350,235,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16" MinWidth="50" MinHeight="10"/>
+        <Button x:Name="setKeyButton" Content="Set" HorizontalAlignment="Right" Margin="0,230,200,0" VerticalAlignment="Top" FontSize="16" Padding="20,5,20,5" Click="setKeyToggle" FontWeight="Bold">
+            <Button.Background>
+                <SolidColorBrush Color="#FFAACFDA" Opacity="1"/>
+            </Button.Background>
+        </Button>
+        <Button x:Name="clearKeyButton" Content="Clear" HorizontalAlignment="Right" Margin="0,230,50,0" VerticalAlignment="Top" FontSize="16" Padding="20,5,20,5" Click="clearKeyToggle" FontWeight="Bold">
+            <Button.Background>
+                <SolidColorBrush Color="#FFAACFDA" Opacity="1"/>
+            </Button.Background>
+        </Button>
+        <TextBlock x:Name="Explication1" HorizontalAlignment="Left" Margin="50,250,0,0" Text="( Click Set and press a key )" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Padding="0,0,0,0"/>
+        <TextBlock x:Name="Explication2" HorizontalAlignment="Left" Margin="150,302,0,0" Text="( milliseconds before Start )" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14"/>
+        <TextBlock x:Name="Explication3" HorizontalAlignment="Left" Margin="225,0,0,40" Text="( milliseconds )" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="14"/>
+        <TextBlock x:Name="AuthorTittle" HorizontalAlignment="Right" Margin="0,0,180,75" Text="Author:" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="22" FontWeight="Bold"/>
+        <TextBlock x:Name="AuthorName" HorizontalAlignment="Right" Margin="0,0,50,79" Text="Angel Canovas" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="16"/>
+        <TextBlock x:Name="GitlabTittle" HorizontalAlignment="Right" Margin="0,0,180,30" Text="Gitlab:" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="20" FontWeight="Bold"/>
+        <TextBlock HorizontalAlignment="Right" Margin="0,0,50,34" Text="@AngelCanovas" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="14"/>
+        <TextBlock x:Name="versionTextBox" HorizontalAlignment="Right" Margin="0,30,50,0" Text="V 1.2" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
     </Grid>
 </Window>
