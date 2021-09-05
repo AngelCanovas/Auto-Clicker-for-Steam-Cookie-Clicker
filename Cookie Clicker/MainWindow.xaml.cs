@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using System.Windows.Threading;
 
 namespace Cookie_Clicker
 {
@@ -18,13 +19,23 @@ namespace Cookie_Clicker
         public bool IsFixPosition { get; set; }
         public double XPosition { get; set; }
         public double YPosition { get; set; }
+        public int BarrelRollDelay { get; set; }
+        public int BarrelRollRadious { get; set; }
+        public bool IsBarrelRollCheck { get; set; }
 
         bool canAutoClickerStart = false;
         bool canSetGoldenCookiePosition = false;
         bool toggleAutoClickerState = false;
 
+        private int rotationTime = 2000; // total millis per rotation
+        private int rotationSteps = 36 * 2;
+        private int rotationCliksPerStep = 5;
+        private int rotationClickDelay = 15;
+
+
         private IntPtr _windowHandle;
         private HwndSource _source;
+        private DispatcherTimer dispatcherTimer;
 
         private const int HOTKEY_ID = 9000;
         private const uint MOD_NONE = 0x0000; // (none)
@@ -70,8 +81,11 @@ namespace Cookie_Clicker
             SleepTimeMillis = 20;
             InitialDelay = 200;
             IsFixPosition = false;
-            XPosition = 300;
-            YPosition = 400;
+            XPosition = 290;
+            YPosition = 420;
+            BarrelRollDelay = 30;
+            BarrelRollRadious = 170;
+            IsBarrelRollCheck = false;
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -119,12 +133,34 @@ namespace Cookie_Clicker
                                     if (toggleAutoClickerState)
                                     {
                                         // if clicker status is running (true), toggle to false to stop it 
+                                        if (dispatcherTimer != null)
+                                        {
+                                            dispatcherTimer.Stop();
+                                        }
+
                                         Stop();
                                     }
                                     else
                                     {
                                         // if clicker is not running (false), start it
                                         Start();
+
+                                        if (IsBarrelRollCheck)
+                                        {
+                                            //  DispatcherTimer setup Start
+                                            dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+                                            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+
+                                            int temp = BarrelRollDelay;
+                                            int hours = temp / 3600;
+                                            temp = temp - hours * 3600;
+                                            int minutes = temp / 60;
+                                            int seconds = temp - minutes * 60;
+                                            dispatcherTimer.Interval = new TimeSpan(hours, minutes, seconds);
+
+                                            //dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+                                            dispatcherTimer.Start();
+                                        }
                                     }
                                 }
                             }
@@ -154,6 +190,15 @@ namespace Cookie_Clicker
             }
             return;
          }
+
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            //long timer = System.Diagnostics.Stopwatch.GetTimestamp() + BarrelRollDelay;
+
+            Stop();
+            doABarrelRoll(null, null);
+            Start();
+        }
 
         private void doAClick()
         {
@@ -256,6 +301,39 @@ namespace Cookie_Clicker
         private void uncheckFixPosition(object sender, RoutedEventArgs e)
         {
             IsFixPosition = false;
+        }
+
+        private void doABarrelRoll(object sender, RoutedEventArgs e)
+        {
+            // rotationRadious = (int) XPosition / 2;
+            int increment = 360 / rotationSteps;
+            double theta = 0;
+            double xPos, yPos = 0;
+            Point originalMousePosition = GetMousePosition();
+
+            for (int i = 0; i < 360; i += increment)
+            {
+                theta = i * Math.PI / 180;
+                xPos = XPosition + BarrelRollRadious * Math.Cos(theta);
+                yPos = YPosition + BarrelRollRadious * Math.Sin(theta);
+
+                for (int j=0; j<rotationCliksPerStep; j++)
+                {
+                    Thread.Sleep(rotationClickDelay);
+                    LeftMouseClick((int) xPos, (int) yPos);
+                }
+            }
+            SetCursorPos((int) originalMousePosition.X, (int) originalMousePosition.Y);
+        }
+
+        private void checkBarrelRoll(object sender, RoutedEventArgs e)
+        {
+            IsBarrelRollCheck = true;
+        }
+
+        private void uncheckBarrelRoll(object sender, RoutedEventArgs e)
+        {
+            IsBarrelRollCheck = false;
         }
     }
 }

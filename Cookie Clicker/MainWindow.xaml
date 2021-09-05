@@ -5,38 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cookie_Clicker"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="MainWindow_Loaded" ResizeMode="NoResize">
+        Title="MainWindow" Height="500" Width="850" Loaded="MainWindow_Loaded" ResizeMode="NoResize">
     <Grid x:Name="myGrid">
         <TextBlock x:Name="tittleTextBox" TextWrapping="Wrap" HorizontalAlignment="Left" Margin="100,20,0,0" FontWeight="Bold" FontSize="30" TextDecorations="{x:Null}" VerticalAlignment="Top" Foreground="#FF006DAC" Text="Auto Clicker for Steam Cookie Clicker"/>
         <TextBox x:Name="sleepMillisTextBox" Text="{Binding SleepTimeMillis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" TextWrapping="Wrap" Margin="350,0,0,40" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" MinWidth="50" MinHeight="10"/>
-        <TextBlock x:Name="delayTextBlock" HorizontalAlignment="Left" Margin="50,300,0,0" Text="Initial delay" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
-        <TextBox x:Name="initialDelayTextBox" Text="{Binding InitialDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="350,300,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="16"/>
+        <TextBlock x:Name="delayTextBlock" HorizontalAlignment="Left" Margin="50,0,0,100" Text="Initial delay" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="16" FontWeight="Bold"/>
+        <TextBox x:Name="initialDelayTextBox" Text="{Binding InitialDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="350,300,0,100" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="120" FontSize="16"/>
         <TextBlock x:Name="delayBetweenClicksTextBlock" HorizontalAlignment="Left" Margin="50,0,0,40" Text="Delay between clicks" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="16" FontWeight="Bold"/>
-        <TextBlock x:Name="toggleKeyTextBlock" HorizontalAlignment="Left" Margin="50,220,0,0" Text="Key to toggle on/off:" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" FontSize="16"/>
-        <TextBox x:Name="keyNameTextBox" TextWrapping="Wrap" Margin="350,235,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16" MinWidth="50" MinHeight="10"/>
-        <Button x:Name="setKeyButton" Content="Set" HorizontalAlignment="Right" Margin="0,230,200,0" VerticalAlignment="Top" FontSize="16" Padding="20,5,20,5" Click="setKeyToggle" FontWeight="Bold">
+        <TextBlock x:Name="toggleKeyTextBlock" HorizontalAlignment="Left" Margin="50,0,0,180" Text="Key to toggle on/off:" TextWrapping="Wrap" VerticalAlignment="Bottom" FontWeight="Bold" FontSize="16"/>
+        <TextBox x:Name="keyNameTextBox" TextWrapping="Wrap" Margin="350,0,0,165" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="16" MinWidth="50" MinHeight="10"/>
+        <Button x:Name="setKeyButton" Content="Set" HorizontalAlignment="Right" Margin="0,0,200,165" VerticalAlignment="Bottom" FontSize="16" Padding="20,5,20,5" Click="setKeyToggle" FontWeight="Bold">
             <Button.Background>
                 <SolidColorBrush Color="#FFAACFDA" Opacity="1"/>
             </Button.Background>
         </Button>
-        <Button x:Name="clearKeyButton" Content="Clear" HorizontalAlignment="Right" Margin="0,230,50,0" VerticalAlignment="Top" FontSize="16" Padding="20,5,20,5" Click="clearKeyToggle" FontWeight="Bold">
+        <Button x:Name="clearKeyButton" Content="Clear" HorizontalAlignment="Right" Margin="0,0,50,165" VerticalAlignment="Bottom" FontSize="16" Padding="20,5,20,5" Click="clearKeyToggle" FontWeight="Bold">
             <Button.Background>
                 <SolidColorBrush Color="#FFAACFDA" Opacity="1"/>
             </Button.Background>
         </Button>
-        <TextBlock x:Name="Explication1" HorizontalAlignment="Left" Margin="50,250,0,0" Text="( Click Set and press a key )" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Padding="0,0,0,0"/>
-        <TextBlock x:Name="Explication2" HorizontalAlignment="Left" Margin="150,302,0,0" Text="( milliseconds before Start )" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14"/>
+        <TextBlock x:Name="Explication1" HorizontalAlignment="Left" Margin="50,0,0,150" Text="( Click Set and press a key )" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="14" Padding="0,0,0,0"/>
+        <TextBlock x:Name="Explication2" HorizontalAlignment="Left" Margin="150,302,0,100" Text="( milliseconds before Start )" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="14"/>
         <TextBlock x:Name="Explication3" HorizontalAlignment="Left" Margin="225,0,0,40" Text="( milliseconds )" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="14"/>
         <TextBlock x:Name="AuthorTittle" HorizontalAlignment="Right" Margin="0,0,180,75" Text="Author:" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="22" FontWeight="Bold"/>
         <TextBlock x:Name="AuthorName" HorizontalAlignment="Right" Margin="0,0,50,79" Text="Angel Canovas" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="16"/>
         <TextBlock x:Name="GitlabTittle" HorizontalAlignment="Right" Margin="0,0,180,30" Text="Gitlab:" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="20" FontWeight="Bold"/>
         <TextBlock HorizontalAlignment="Right" Margin="0,0,50,34" Text="@AngelCanovas" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="14"/>
-        <TextBlock x:Name="versionTextBox" HorizontalAlignment="Right" Margin="0,30,50,0" Text="V 1.3" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
+        <TextBlock x:Name="versionTextBox" HorizontalAlignment="Right" Margin="0,30,50,0" Text="V 1.4" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontWeight="Bold"/>
         <TextBlock x:Name="xPositionLabel" HorizontalAlignment="Left" Margin="315,102,0,0" Text="(Pixels) Width:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" RenderTransformOrigin="-0.12,0.557"/>
         <CheckBox x:Name="fixPositionCheckBox" Content="Fix position for Golden cookie" HorizontalAlignment="Left" Margin="50,100,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Checked="checkFixPosition" Unchecked="uncheckFixPosition"/>
         <TextBox x:Name="xPositionTextBox" Text="{Binding XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="410,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.502,0.868" MinWidth="50" FontSize="14"/>
         <TextBlock x:Name="yPositionLabel" HorizontalAlignment="Left" Margin="500,102,0,0" Text="Heigth:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14"/>
         <TextBox x:Name="yPositionTextBox" Text="{Binding YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="550,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" MinWidth="50"/>
-        <Button x:Name="clearPositionButton" Content="Reset" HorizontalAlignment="Left" Margin="650,96,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Padding="10,5,10,5" Click="resetGoldenCookiePosition"/>
+        <Button x:Name="clearPositionButton" Content="Reset" HorizontalAlignment="Right" Margin="0,96,100,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Padding="10,5,10,5" Click="resetGoldenCookiePosition"/>
+        <Button x:Name="testButton" Content="Barrel Roll!" HorizontalAlignment="Right" Margin="0,170,100,0" VerticalAlignment="Top" FontSize="16" Click="doABarrelRoll" FontWeight="Bold" Padding="10,5,10,5"/>
+        <CheckBox x:Name="barrelRollCheckBox" Content="Barrel roll to clean wrinklers" HorizontalAlignment="Left" Margin="50,175,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Checked="checkBarrelRoll" Unchecked="uncheckBarrelRoll"/>
+        <TextBlock x:Name="barrelRollTextBlock" HorizontalAlignment="Left" Margin="310,160,0,0" Text="Do it every (seconds)" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14"/>
+        <TextBox x:Name="barrelRollTextBox" Text="{Binding BarrelRollDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="470,158,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" MinWidth="50" MinHeight="10" PreviewTextInput="NumberValidationTextBox"/>
+        <TextBlock x:Name="radiousTextBlock" HorizontalAlignment="Left" Margin="310,200,0,0" Text="Circle radious (pixels)" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14"/>
+        <TextBox x:Name="radiousTextBox" Text="{Binding BarrelRollRadious, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="470,200,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MinHeight="10" MinWidth="50" FontSize="14"/>
     </Grid>
 </Window>
