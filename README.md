@@ -8,6 +8,8 @@ Junior developer project. Please be aware of bugs :)
 
 Work in Progress. Current version 1.4
 
+![imagen](https://user-images.githubusercontent.com/56929468/132182987-85b9f1a0-6d04-45cf-b70d-d4df317f0d33.png)
+
 
 # Features
 
