@@ -22,20 +22,22 @@ namespace Cookie_Clicker
         public int BarrelRollDelay { get; set; }
         public int BarrelRollRadius { get; set; }
         public bool IsBarrelRollCheck { get; set; }
+        public bool IsGoldenScanCheck { get; set; }
+        public int GoldenScanDelay { get; set; }
 
         bool canAutoClickerStart = false;
         bool canSetGoldenCookiePosition = false;
+        bool canSetGoldenScan = false;
         bool toggleAutoClickerState = false;
 
-        private int rotationTime = 2000; // total millis per rotation
         private int rotationSteps = 36 * 2;
-        private int rotationCliksPerStep = 5;
-        private int rotationClickDelay = 15;
-
+        private int rotationCliksPerStep = 4;
+        private int rotationClickDelay = 10;
 
         private IntPtr _windowHandle;
         private HwndSource _source;
         private DispatcherTimer dispatcherTimer;
+        private DispatcherTimer goldenDispatcherTimer;
 
         private const int HOTKEY_ID = 9000;
         private const uint MOD_NONE = 0x0000; // (none)
@@ -86,6 +88,8 @@ namespace Cookie_Clicker
             BarrelRollDelay = 30;
             BarrelRollRadius = 170;
             IsBarrelRollCheck = false;
+            IsGoldenScanCheck = false;
+            GoldenScanDelay = 30;
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -137,6 +141,10 @@ namespace Cookie_Clicker
                                         {
                                             dispatcherTimer.Stop();
                                         }
+                                        if (goldenDispatcherTimer != null)
+                                        {
+                                            goldenDispatcherTimer.Stop();
+                                        }
 
                                         Stop();
                                     }
@@ -147,8 +155,8 @@ namespace Cookie_Clicker
 
                                         if (IsBarrelRollCheck)
                                         {
-                                            //  DispatcherTimer setup Start
-                                            dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+                                            //  DispatcherTimer for Barrel Roll
+                                            dispatcherTimer = new DispatcherTimer();
                                             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
 
                                             int temp = BarrelRollDelay;
@@ -160,6 +168,22 @@ namespace Cookie_Clicker
 
                                             //dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
                                             dispatcherTimer.Start();
+                                        }
+
+                                        if (IsGoldenScanCheck)
+                                        {
+                                            //  DispatcherTimer for Golden Cookie Scan
+                                            goldenDispatcherTimer = new DispatcherTimer();
+                                            goldenDispatcherTimer.Tick += new EventHandler(handleGoldenDispatcherTimer);
+
+                                            int temp = GoldenScanDelay;
+                                            int hours = temp / 3600;
+                                            temp = temp - hours * 3600;
+                                            int minutes = temp / 60;
+                                            int seconds = temp - minutes * 60;
+                                            goldenDispatcherTimer.Interval = new TimeSpan(hours, minutes, seconds);
+
+                                            goldenDispatcherTimer.Start();
                                         }
                                     }
                                 }
@@ -193,11 +217,17 @@ namespace Cookie_Clicker
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            //long timer = System.Diagnostics.Stopwatch.GetTimestamp() + BarrelRollDelay;
-
             Stop();
             doABarrelRoll(null, null);
             Start();
+        }
+
+        private void handleGoldenDispatcherTimer(object sender, EventArgs e)
+        {
+            Stop();
+            doAGoldenScan(null, null);
+            Start();
+            
         }
 
         private void doAClick()
@@ -307,8 +337,7 @@ namespace Cookie_Clicker
         {
             // rotationRadius = (int) XPosition / 2;
             int increment = 360 / rotationSteps;
-            double theta = 0;
-            double xPos, yPos = 0;
+            double theta, xPos, yPos;
             Point originalMousePosition = GetMousePosition();
 
             for (int i = 0; i < 360; i += increment)
@@ -326,6 +355,27 @@ namespace Cookie_Clicker
             SetCursorPos((int) originalMousePosition.X, (int) originalMousePosition.Y);
         }
 
+        private void doAGoldenScan(object sender, RoutedEventArgs e)
+        {
+            Point originalMousePosition = GetMousePosition();
+            Point goldenStartPoint = new Point(5, 180);
+            Point goldenEndPoint = new Point(1570, 1000);
+            int pixelStepHorizontal = 25;
+            int pixelStepVertical = 25;
+
+            for (int y = (int)goldenStartPoint.Y; y < (int)goldenEndPoint.Y; y += pixelStepVertical)
+            {
+                for (int x = (int)goldenStartPoint.X; x < (int)goldenEndPoint.X; x += pixelStepHorizontal)
+                {
+                    if (x < 100 && y > 900) { continue; } // avoid Klumbor in the left bottom side
+                    Thread.Sleep(5);
+                    LeftMouseClick(x, y);
+                }
+            }
+
+            SetCursorPos((int)originalMousePosition.X, (int)originalMousePosition.Y);
+        }
+
         private void checkBarrelRoll(object sender, RoutedEventArgs e)
         {
             IsBarrelRollCheck = true;
@@ -334,6 +384,16 @@ namespace Cookie_Clicker
         private void uncheckBarrelRoll(object sender, RoutedEventArgs e)
         {
             IsBarrelRollCheck = false;
+        }
+
+        private void checkGoldenScan(object sender, RoutedEventArgs e)
+        {
+            IsGoldenScanCheck = true;
+        }
+
+        private void uncheckGoldenScan(object sender, RoutedEventArgs e)
+        {
+            IsGoldenScanCheck = false;
         }
     }
 }
