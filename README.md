@@ -23,6 +23,7 @@ Junior developer project. Please be aware of bugs :)
 # More to come (Hopefully)
 - Change button of the mouse for auto click
 - Add/Remove delay between clicks with +/-
+- Add fully automated functionality to buy upgrades and buildings while auto clicking
 - Solve issue: Can't stop the clicker instantally when press the bind key
 - Reduce size of application & add suport to different cpu architectures
 - Improve visual graphics
