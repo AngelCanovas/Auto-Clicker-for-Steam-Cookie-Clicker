@@ -6,7 +6,7 @@ Compatible and tested for Steam game Cookie Clicker.
 
 Junior developer project. Please be aware of bugs :)
 
-![imagen](https://user-images.githubusercontent.com/56929468/132405148-2bf23272-9264-4bfb-bc36-6015c2fce4ca.png)
+![imagen](https://user-images.githubusercontent.com/56929468/132416539-942cb244-edb0-4fa6-bbe7-d25cfdb486d4.png)
 
 
 # Features
