@@ -51,6 +51,7 @@ namespace Cookie_Clicker
         private int distanteBetweenBuildings = 64; // Pixels
         private int distanteToUpgrades = 108;
         private int distanceBetweenUpgradeAndSwitches = 76;
+        private int distanceWheelScrollForLastBuildings = 75;
         private int scrollMaximumDistancePositive = 140 * 7;
         private int scrollMaximumDistanceNegative = -(140 * 7);
 
@@ -103,7 +104,7 @@ namespace Cookie_Clicker
         {
             InitializeComponent();
             this.DataContext = this;
-            SleepTimeMillis = 20;
+            SleepTimeMillis = 15;
             InitialDelay = 100;
             IsFixPosition = false;
             XPosition = 290;
@@ -433,16 +434,18 @@ namespace Cookie_Clicker
         private void doAUpgradeBuy(object sender, RoutedEventArgs e)
         {
             originalMousePosition = GetMousePosition();
-            
+            int xPos = (int) automaticBuyStartPoint.X;
+            int yPos = (int) automaticBuyStartPoint.Y;
+
             // Scroll to the top
-            ScrollMouse((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y, scrollMaximumDistancePositive);
+            ScrollMouse(xPos, yPos, scrollMaximumDistancePositive);
             Thread.Sleep(50);
 
             // Buy upgrades first to better cookies/sec scaling
             for (int k = 0; k < 10; k++)
             {
                 Thread.Sleep(100);
-                LeftMouseClick((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y - 11 * distanteBetweenBuildings - distanteToUpgrades);
+                LeftMouseClick(xPos, yPos - 11 * distanteBetweenBuildings - distanteToUpgrades);
             }
 
             // Buy switches & season starters if not disabled
@@ -452,27 +455,27 @@ namespace Cookie_Clicker
                 for (int l = 0; l < 3; l++)
                 {
                     Thread.Sleep(100);
-                    LeftMouseClick((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y - 11 * distanteBetweenBuildings - distanteToUpgrades - distanceBetweenUpgradeAndSwitches);
+                    LeftMouseClick(xPos, yPos - 11 * distanteBetweenBuildings - distanteToUpgrades - distanceBetweenUpgradeAndSwitches);
                 }
             }
 
             // Scroll to the end of the buildings
-            ScrollMouse((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y, scrollMaximumDistanceNegative);
+            ScrollMouse(xPos, yPos, scrollMaximumDistanceNegative);
 
             // Buy last buildings upgrades
             for (int i = 1; i <= 7 ; i++)
             {
                 Thread.Sleep(50);
-                ScrollMouse((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y, i * 75);
+                ScrollMouse(xPos, yPos, distanceWheelScrollForLastBuildings);
                 for (int i2 = 0; i2 < 10; i2++)
                 {
                     Thread.Sleep(15);
-                    LeftMouseClick((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y);
+                    LeftMouseClick(xPos, yPos);
                 }
             }
 
             // Scroll to the top, in case of scroll displacement
-            ScrollMouse((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y, scrollMaximumDistancePositive);
+            ScrollMouse(xPos, yPos, scrollMaximumDistancePositive);
 
             // Buy 11 first buildings
             for (int j = 1; j <= 11; j++)
@@ -481,12 +484,12 @@ namespace Cookie_Clicker
                 for (int j2 = 0; j2 < 10; j2++)
                 {
                     Thread.Sleep(15);
-                    LeftMouseClick((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y - j * distanteBetweenBuildings);
+                    LeftMouseClick(xPos, yPos - j * distanteBetweenBuildings);
                 }
             }
 
-            ScrollMouse((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y, scrollMaximumDistancePositive);
-            SetCursorPos((int)originalMousePosition.X, (int)originalMousePosition.Y);
+            ScrollMouse(xPos, yPos, scrollMaximumDistancePositive);
+            SetCursorPos(xPos, yPos);
         }
 
         private void checkBarrelRoll(object sender, RoutedEventArgs e)
