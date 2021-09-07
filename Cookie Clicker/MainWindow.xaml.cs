@@ -24,6 +24,8 @@ namespace Cookie_Clicker
         public bool IsBarrelRollCheck { get; set; }
         public bool IsGoldenScanCheck { get; set; }
         public int GoldenScanDelay { get; set; }
+        public bool IsAutomaticModeCheck { get; set; }
+        public int AutomaticModeDelay { get; set; }
 
         bool canAutoClickerStart = false;
         bool canSetGoldenCookiePosition = false;
@@ -38,6 +40,7 @@ namespace Cookie_Clicker
         private HwndSource _source;
         private DispatcherTimer dispatcherTimer;
         private DispatcherTimer goldenDispatcherTimer;
+        private DispatcherTimer automaticModeDispatcherTimer;
 
         private const int HOTKEY_ID = 9000;
         private const uint MOD_NONE = 0x0000; // (none)
@@ -47,6 +50,7 @@ namespace Cookie_Clicker
         private const uint MOD_WIN = 0x0008; //WINDOWS
         public const int MOUSEEVENTF_LEFTDOWN = 0x02; // Mouse left click down
         public const int MOUSEEVENTF_LEFTUP = 0x04; // Mouse left click up
+        public const int MOUSEEVENTF_WHEEL = 0x0800; // Mouse wheel
 
         Thread Clicker;
         bool isKeyToggleAllowed = false;
@@ -90,6 +94,8 @@ namespace Cookie_Clicker
             IsBarrelRollCheck = false;
             IsGoldenScanCheck = false;
             GoldenScanDelay = 30;
+            IsAutomaticModeCheck = false;
+            AutomaticModeDelay = 10;
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -132,59 +138,75 @@ namespace Cookie_Clicker
                             else if (vkey == KeyInterop.VirtualKeyFromKey(toggleKey))
                             {
                                 // Key Press Logic
-                                if (canAutoClickerStart)
+                                if (toggleAutoClickerState)
                                 {
-                                    if (toggleAutoClickerState)
-                                    {
-                                        // if clicker status is running (true), toggle to false to stop it 
-                                        if (dispatcherTimer != null)
-                                        {
-                                            dispatcherTimer.Stop();
-                                        }
-                                        if (goldenDispatcherTimer != null)
-                                        {
-                                            goldenDispatcherTimer.Stop();
-                                        }
+                                    // if clicker status is running (true), toggle to false to stop it
+                                    Stop();
 
-                                        Stop();
+                                    if (dispatcherTimer != null)
+                                    {
+                                        dispatcherTimer.Stop();
                                     }
-                                    else
+                                    if (goldenDispatcherTimer != null)
                                     {
-                                        // if clicker is not running (false), start it
-                                        Start();
+                                        goldenDispatcherTimer.Stop();
+                                    }
+                                    if (automaticModeDispatcherTimer != null)
+                                    {
+                                        automaticModeDispatcherTimer.Stop();
+                                    }
+                                }
+                                else
+                                {
+                                    // if clicker is not running (false), start it
+                                    Start();
 
-                                        if (IsBarrelRollCheck)
-                                        {
-                                            //  DispatcherTimer for Barrel Roll
-                                            dispatcherTimer = new DispatcherTimer();
-                                            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+                                    if (IsBarrelRollCheck)
+                                    {
+                                        //  DispatcherTimer for Barrel Roll
+                                        dispatcherTimer = new DispatcherTimer();
+                                        dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
 
-                                            int temp = BarrelRollDelay;
-                                            int hours = temp / 3600;
-                                            temp = temp - hours * 3600;
-                                            int minutes = temp / 60;
-                                            int seconds = temp - minutes * 60;
-                                            dispatcherTimer.Interval = new TimeSpan(hours, minutes, seconds);
+                                        int temp = BarrelRollDelay;
+                                        int hours = temp / 3600;
+                                        temp = temp - hours * 3600;
+                                        int minutes = temp / 60;
+                                        int seconds = temp - minutes * 60;
+                                        dispatcherTimer.Interval = new TimeSpan(hours, minutes, seconds);
 
-                                            //dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
-                                            dispatcherTimer.Start();
-                                        }
+                                        dispatcherTimer.Start();
+                                    }
 
-                                        if (IsGoldenScanCheck)
-                                        {
-                                            //  DispatcherTimer for Golden Cookie Scan
-                                            goldenDispatcherTimer = new DispatcherTimer();
-                                            goldenDispatcherTimer.Tick += new EventHandler(handleGoldenDispatcherTimer);
+                                    if (IsGoldenScanCheck)
+                                    {
+                                        //  DispatcherTimer for Golden Cookie Scan
+                                        goldenDispatcherTimer = new DispatcherTimer();
+                                        goldenDispatcherTimer.Tick += new EventHandler(handleGoldenDispatcherTimer);
 
-                                            int temp = GoldenScanDelay;
-                                            int hours = temp / 3600;
-                                            temp = temp - hours * 3600;
-                                            int minutes = temp / 60;
-                                            int seconds = temp - minutes * 60;
-                                            goldenDispatcherTimer.Interval = new TimeSpan(hours, minutes, seconds);
+                                        int temp = GoldenScanDelay;
+                                        int hours = temp / 3600;
+                                        temp = temp - hours * 3600;
+                                        int minutes = temp / 60;
+                                        int seconds = temp - minutes * 60;
+                                        goldenDispatcherTimer.Interval = new TimeSpan(hours, minutes, seconds);
 
-                                            goldenDispatcherTimer.Start();
-                                        }
+                                        goldenDispatcherTimer.Start();
+                                    }
+
+                                    if (IsAutomaticModeCheck)
+                                    {
+                                        //  DispatcherTimer for Automatic mode
+                                        automaticModeDispatcherTimer = new DispatcherTimer();
+                                        automaticModeDispatcherTimer.Tick += new EventHandler(handleAutomaticModeDispatcherTimer);
+
+                                        int temp = AutomaticModeDelay;
+                                        int hours = temp / 3600;
+                                        temp = temp - hours * 3600;
+                                        int minutes = temp / 60;
+                                        int seconds = temp - minutes * 60;
+                                        automaticModeDispatcherTimer.Interval = new TimeSpan(hours, minutes, seconds);
+
+                                        automaticModeDispatcherTimer.Start();
                                     }
                                 }
                             }
@@ -227,7 +249,13 @@ namespace Cookie_Clicker
             Stop();
             doAGoldenScan(null, null);
             Start();
-            
+        }
+
+        private void handleAutomaticModeDispatcherTimer(object sender, EventArgs e)
+        {
+            Stop();
+            doAUpgradeBuy(null, null);
+            Start();
         }
 
         private void doAClick()
@@ -256,6 +284,15 @@ namespace Cookie_Clicker
             SetCursorPos(xpos, ypos);
             mouse_event(MOUSEEVENTF_LEFTDOWN, xpos, ypos, 0, 0);
             mouse_event(MOUSEEVENTF_LEFTUP, xpos, ypos, 0, 0);
+        }
+
+        // Simulate a wheel scroll
+        // Positive amount is going up, negative going down in screen
+        // One wheel click is defined as WHEEL_DELTA, which is 120
+        public static void ScrollMouse(int xpos, int ypos, int amount)
+        {
+            SetCursorPos(xpos, ypos);
+            mouse_event(MOUSEEVENTF_WHEEL, xpos, ypos, amount, 0);
         }
 
 
@@ -342,12 +379,14 @@ namespace Cookie_Clicker
 
             for (int i = 0; i < 360; i += increment)
             {
+                //if (!toggleAutoClickerState) { break; }
                 theta = i * Math.PI / 180;
                 xPos = XPosition + BarrelRollRadius * Math.Cos(theta);
                 yPos = YPosition + BarrelRollRadius * Math.Sin(theta);
 
                 for (int j=0; j<rotationCliksPerStep; j++)
                 {
+                    //if (!toggleAutoClickerState) { break; }
                     Thread.Sleep(rotationClickDelay);
                     LeftMouseClick((int) xPos, (int) yPos);
                 }
@@ -359,20 +398,81 @@ namespace Cookie_Clicker
         {
             Point originalMousePosition = GetMousePosition();
             Point goldenStartPoint = new Point(5, 180);
-            Point goldenEndPoint = new Point(1570, 1000);
+            Point goldenEndPoint = new Point(1580, 1010);
             int pixelStepHorizontal = 25;
             int pixelStepVertical = 25;
 
             for (int y = (int)goldenStartPoint.Y; y < (int)goldenEndPoint.Y; y += pixelStepVertical)
             {
+                //if (!toggleAutoClickerState) { break; }
                 for (int x = (int)goldenStartPoint.X; x < (int)goldenEndPoint.X; x += pixelStepHorizontal)
                 {
-                    if (x < 100 && y > 900) { continue; } // avoid Klumbor in the left bottom side
+                    //if (!toggleAutoClickerState) { break; }
+                    if (x < 90 && y > 890) { continue; } // avoid Klumbor in the left bottom side
                     Thread.Sleep(5);
                     LeftMouseClick(x, y);
                 }
             }
 
+            SetCursorPos((int)originalMousePosition.X, (int)originalMousePosition.Y);
+        }
+
+        private void doAUpgradeBuy(object sender, RoutedEventArgs e)
+        {
+            Point originalMousePosition = GetMousePosition();
+            Point automaticBuyStartPoint = new Point(1625, 1005);
+            int distanteBetweenBuildings = 64; // Pixels
+            int distanteToUpgrades = 108;
+            int distanceBetweenUpgradeAndSwitches = 76;
+            int scrollMaximumDistancePositive = 140 * 7;
+            int scrollMaximumDistanceNegative = - (140 * 7);
+
+            // Scroll to the top
+            ScrollMouse((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y, scrollMaximumDistancePositive);
+            Thread.Sleep(50);
+
+            // Buy upgrades first to better cookies/sec scaling
+            for (int k = 0; k < 10; k++)
+            {
+                Thread.Sleep(100);
+                LeftMouseClick((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y - 11 * distanteBetweenBuildings - distanteToUpgrades);
+            }
+
+            // Scroll to the end of the buildings
+            ScrollMouse((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y, scrollMaximumDistanceNegative);
+
+            // Buy last buildings upgrades
+            for (int i = 0; i < 7; i++)
+            {
+                Thread.Sleep(50);
+                ScrollMouse((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y, 75);
+                for (int i2 = 0; i2 < 10; i2++)
+                {
+                    Thread.Sleep(15);
+                    LeftMouseClick((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y);
+                }
+            }
+
+            // Buy 11 first buildings
+            for (int j = 1; j <= 11; j++)
+            {
+                Thread.Sleep(50);
+                for (int j2 = 0; j2 < 10; j2++)
+                {
+                    Thread.Sleep(15);
+                    LeftMouseClick((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y - j * distanteBetweenBuildings);
+                }
+            }
+
+            // Buy switches ?
+            Thread.Sleep(100);
+            for (int l = 0; l < 3; l++)
+            {
+                Thread.Sleep(100);
+                LeftMouseClick((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y - 11 * distanteBetweenBuildings - distanteToUpgrades - distanceBetweenUpgradeAndSwitches);
+            }
+
+            ScrollMouse((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y, 140); // Set the scroll to the top
             SetCursorPos((int)originalMousePosition.X, (int)originalMousePosition.Y);
         }
 
@@ -394,6 +494,16 @@ namespace Cookie_Clicker
         private void uncheckGoldenScan(object sender, RoutedEventArgs e)
         {
             IsGoldenScanCheck = false;
+        }
+
+        private void checkAutomaticMode(object sender, RoutedEventArgs e)
+        {
+            IsAutomaticModeCheck = true;
+        }
+
+        private void uncheckAutomaticMode(object sender, RoutedEventArgs e)
+        {
+            IsAutomaticModeCheck = false;
         }
     }
 }
