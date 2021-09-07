@@ -26,22 +26,45 @@ namespace Cookie_Clicker
         public int GoldenScanDelay { get; set; }
         public bool IsAutomaticModeCheck { get; set; }
         public int AutomaticModeDelay { get; set; }
+        public bool IsDisabledSwitchBuy { get; set; }
 
-        bool canAutoClickerStart = false;
-        bool canSetGoldenCookiePosition = false;
-        bool canSetGoldenScan = false;
-        bool toggleAutoClickerState = false;
+        public bool canAutoClickerStart = false;
+        //bool canSetGoldenCookiePosition = false;
+        //bool canSetGoldenScan = false;
+        public bool toggleAutoClickerState = false;
 
+        // variables for Barrel Roll
+        private Point originalMousePosition;
         private int rotationSteps = 36 * 2;
         private int rotationCliksPerStep = 4;
         private int rotationClickDelay = 10;
 
+        // variables for golden auto scan 
+        private int goldenClickDelay = 5;
+        private int goldenPixelStepHorizontal = 25;
+        private int goldenPixelStepVertical = 25;
+        private Point goldenStartPoint = new Point(5, 180);
+        private Point goldenEndPoint = new Point(1580, 1010);
+
+        // variables for auto buy upgrader
+        private Point automaticBuyStartPoint = new Point(1625, 1005);
+        private int distanteBetweenBuildings = 64; // Pixels
+        private int distanteToUpgrades = 108;
+        private int distanceBetweenUpgradeAndSwitches = 76;
+        private int scrollMaximumDistancePositive = 140 * 7;
+        private int scrollMaximumDistanceNegative = -(140 * 7);
+
+        // handle variables for key binding and timers
         private IntPtr _windowHandle;
         private HwndSource _source;
         private DispatcherTimer dispatcherTimer;
         private DispatcherTimer goldenDispatcherTimer;
         private DispatcherTimer automaticModeDispatcherTimer;
+        private Thread Clicker;
+        private bool isKeyToggleAllowed = false;
+        private Key toggleKey = Key.RightCtrl; // default key Right Control
 
+        // constants
         private const int HOTKEY_ID = 9000;
         private const uint MOD_NONE = 0x0000; // (none)
         private const uint MOD_ALT = 0x0001; //ALT
@@ -50,11 +73,7 @@ namespace Cookie_Clicker
         private const uint MOD_WIN = 0x0008; //WINDOWS
         public const int MOUSEEVENTF_LEFTDOWN = 0x02; // Mouse left click down
         public const int MOUSEEVENTF_LEFTUP = 0x04; // Mouse left click up
-        public const int MOUSEEVENTF_WHEEL = 0x0800; // Mouse wheel
-
-        Thread Clicker;
-        bool isKeyToggleAllowed = false;
-        Key toggleKey = Key.RightCtrl; // default key Right Control
+        public const int MOUSEEVENTF_WHEEL = 0x0800; // Mouse wheel        
 
         [DllImport("user32.dll")]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
@@ -85,17 +104,18 @@ namespace Cookie_Clicker
             InitializeComponent();
             this.DataContext = this;
             SleepTimeMillis = 20;
-            InitialDelay = 200;
+            InitialDelay = 100;
             IsFixPosition = false;
             XPosition = 290;
             YPosition = 420;
-            BarrelRollDelay = 30;
+            BarrelRollDelay = 200;
             BarrelRollRadius = 170;
             IsBarrelRollCheck = false;
             IsGoldenScanCheck = false;
-            GoldenScanDelay = 30;
+            GoldenScanDelay = 60;
             IsAutomaticModeCheck = false;
-            AutomaticModeDelay = 10;
+            AutomaticModeDelay = 15;
+            IsDisabledSwitchBuy = false;
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -228,6 +248,7 @@ namespace Cookie_Clicker
         {
             if (isKeyToggleAllowed)
             {
+                Stop();
                 UnregisterHotKey(_windowHandle, HOTKEY_ID);
                 toggleKey = e.Key;
                 keyNameTextBox.Text = toggleKey.ToString();
@@ -372,21 +393,18 @@ namespace Cookie_Clicker
 
         private void doABarrelRoll(object sender, RoutedEventArgs e)
         {
-            // rotationRadius = (int) XPosition / 2;
+            originalMousePosition = GetMousePosition();
             int increment = 360 / rotationSteps;
             double theta, xPos, yPos;
-            Point originalMousePosition = GetMousePosition();
 
             for (int i = 0; i < 360; i += increment)
             {
-                //if (!toggleAutoClickerState) { break; }
                 theta = i * Math.PI / 180;
                 xPos = XPosition + BarrelRollRadius * Math.Cos(theta);
                 yPos = YPosition + BarrelRollRadius * Math.Sin(theta);
 
                 for (int j=0; j<rotationCliksPerStep; j++)
                 {
-                    //if (!toggleAutoClickerState) { break; }
                     Thread.Sleep(rotationClickDelay);
                     LeftMouseClick((int) xPos, (int) yPos);
                 }
@@ -396,20 +414,15 @@ namespace Cookie_Clicker
 
         private void doAGoldenScan(object sender, RoutedEventArgs e)
         {
-            Point originalMousePosition = GetMousePosition();
-            Point goldenStartPoint = new Point(5, 180);
-            Point goldenEndPoint = new Point(1580, 1010);
-            int pixelStepHorizontal = 25;
-            int pixelStepVertical = 25;
+            originalMousePosition = GetMousePosition();
 
-            for (int y = (int)goldenStartPoint.Y; y < (int)goldenEndPoint.Y; y += pixelStepVertical)
+            for (int y = (int)goldenStartPoint.Y; y < (int)goldenEndPoint.Y; y += goldenPixelStepVertical)
             {
-                //if (!toggleAutoClickerState) { break; }
-                for (int x = (int)goldenStartPoint.X; x < (int)goldenEndPoint.X; x += pixelStepHorizontal)
+                for (int x = (int)goldenStartPoint.X; x < (int)goldenEndPoint.X; x += goldenPixelStepHorizontal)
                 {
-                    //if (!toggleAutoClickerState) { break; }
-                    if (x < 90 && y > 890) { continue; } // avoid Klumbor in the left bottom side
-                    Thread.Sleep(5);
+                    if (x < 90 && y > 880) { continue; } // avoid Klumbor in the left bottom side and season companions
+
+                    Thread.Sleep(goldenClickDelay);
                     LeftMouseClick(x, y);
                 }
             }
@@ -419,14 +432,8 @@ namespace Cookie_Clicker
 
         private void doAUpgradeBuy(object sender, RoutedEventArgs e)
         {
-            Point originalMousePosition = GetMousePosition();
-            Point automaticBuyStartPoint = new Point(1625, 1005);
-            int distanteBetweenBuildings = 64; // Pixels
-            int distanteToUpgrades = 108;
-            int distanceBetweenUpgradeAndSwitches = 76;
-            int scrollMaximumDistancePositive = 140 * 7;
-            int scrollMaximumDistanceNegative = - (140 * 7);
-
+            originalMousePosition = GetMousePosition();
+            
             // Scroll to the top
             ScrollMouse((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y, scrollMaximumDistancePositive);
             Thread.Sleep(50);
@@ -438,20 +445,34 @@ namespace Cookie_Clicker
                 LeftMouseClick((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y - 11 * distanteBetweenBuildings - distanteToUpgrades);
             }
 
+            // Buy switches & season starters if not disabled
+            if (!IsDisabledSwitchBuy)
+            {
+                Thread.Sleep(50);
+                for (int l = 0; l < 3; l++)
+                {
+                    Thread.Sleep(100);
+                    LeftMouseClick((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y - 11 * distanteBetweenBuildings - distanteToUpgrades - distanceBetweenUpgradeAndSwitches);
+                }
+            }
+
             // Scroll to the end of the buildings
             ScrollMouse((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y, scrollMaximumDistanceNegative);
 
             // Buy last buildings upgrades
-            for (int i = 0; i < 7; i++)
+            for (int i = 1; i <= 7 ; i++)
             {
                 Thread.Sleep(50);
-                ScrollMouse((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y, 75);
+                ScrollMouse((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y, i * 75);
                 for (int i2 = 0; i2 < 10; i2++)
                 {
                     Thread.Sleep(15);
                     LeftMouseClick((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y);
                 }
             }
+
+            // Scroll to the top, in case of scroll displacement
+            ScrollMouse((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y, scrollMaximumDistancePositive);
 
             // Buy 11 first buildings
             for (int j = 1; j <= 11; j++)
@@ -464,15 +485,7 @@ namespace Cookie_Clicker
                 }
             }
 
-            // Buy switches ?
-            Thread.Sleep(100);
-            for (int l = 0; l < 3; l++)
-            {
-                Thread.Sleep(100);
-                LeftMouseClick((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y - 11 * distanteBetweenBuildings - distanteToUpgrades - distanceBetweenUpgradeAndSwitches);
-            }
-
-            ScrollMouse((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y, 140); // Set the scroll to the top
+            ScrollMouse((int)automaticBuyStartPoint.X, (int)automaticBuyStartPoint.Y, scrollMaximumDistancePositive);
             SetCursorPos((int)originalMousePosition.X, (int)originalMousePosition.Y);
         }
 
@@ -504,6 +517,16 @@ namespace Cookie_Clicker
         private void uncheckAutomaticMode(object sender, RoutedEventArgs e)
         {
             IsAutomaticModeCheck = false;
+        }
+
+        private void checkDisableSwitchBuy(object sender, RoutedEventArgs e)
+        {
+            IsDisabledSwitchBuy = true;
+        }
+
+        private void uncheckDisableSwitchBuy(object sender, RoutedEventArgs e)
+        {
+            IsDisabledSwitchBuy = false;
         }
     }
 }
