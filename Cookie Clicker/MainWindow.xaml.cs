@@ -37,21 +37,24 @@ namespace Cookie_Clicker
         private Point originalMousePosition;
         private int rotationSteps = 36 * 2;
         private int rotationCliksPerStep = 4;
-        private int rotationClickDelay = 10;
+        private int rotationClickDelay = 5;
 
         // variables for golden auto scan 
         private int goldenClickDelay = 5;
-        private int goldenPixelStepHorizontal = 25;
-        private int goldenPixelStepVertical = 25;
+        private int goldenPixelStepHorizontal = 30;
+        private int goldenPixelStepVertical = 30;
         private Point goldenStartPoint = new Point(5, 180);
         private Point goldenEndPoint = new Point(1580, 1010);
 
         // variables for auto buy upgrader
         private Point automaticBuyStartPoint = new Point(1625, 1005);
+        private int automaticBuyClickDelay = 10;
+        private int automaticBuyWaitDelay = 30;
+        private int automaticBuyWaitDelayUpgrades = 50;
         private int distanteBetweenBuildings = 64; // Pixels
         private int distanteToUpgrades = 108;
         private int distanceBetweenUpgradeAndSwitches = 76;
-        private int distanceWheelScrollForLastBuildings = 75;
+        private int distanceWheelScrollForLastBuildings = 76; // same as between upgrades?
         private int scrollMaximumDistancePositive = 140 * 7;
         private int scrollMaximumDistanceNegative = -(140 * 7);
 
@@ -439,22 +442,23 @@ namespace Cookie_Clicker
 
             // Scroll to the top
             ScrollMouse(xPos, yPos, scrollMaximumDistancePositive);
-            Thread.Sleep(50);
 
             // Buy upgrades first to better cookies/sec scaling
-            for (int k = 0; k < 10; k++)
+            for (int k = 0; k < 15; k++)
             {
-                Thread.Sleep(100);
+                Thread.Sleep(automaticBuyWaitDelayUpgrades);
                 LeftMouseClick(xPos, yPos - 11 * distanteBetweenBuildings - distanteToUpgrades);
             }
 
             // Buy switches & season starters if not disabled
             if (!IsDisabledSwitchBuy)
             {
-                Thread.Sleep(50);
+                // Scroll to the top
+                ScrollMouse(xPos, yPos, scrollMaximumDistancePositive);
+
                 for (int l = 0; l < 3; l++)
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(automaticBuyWaitDelayUpgrades);
                     LeftMouseClick(xPos, yPos - 11 * distanteBetweenBuildings - distanteToUpgrades - distanceBetweenUpgradeAndSwitches);
                 }
             }
@@ -463,13 +467,14 @@ namespace Cookie_Clicker
             ScrollMouse(xPos, yPos, scrollMaximumDistanceNegative);
 
             // Buy last buildings upgrades
-            for (int i = 1; i <= 7 ; i++)
+            for (int i = 1; i <= 8 ; i++)
             {
-                Thread.Sleep(50);
+                Thread.Sleep(automaticBuyWaitDelay);
                 ScrollMouse(xPos, yPos, distanceWheelScrollForLastBuildings);
+
                 for (int i2 = 0; i2 < 10; i2++)
                 {
-                    Thread.Sleep(15);
+                    Thread.Sleep(automaticBuyClickDelay);
                     LeftMouseClick(xPos, yPos);
                 }
             }
@@ -480,16 +485,18 @@ namespace Cookie_Clicker
             // Buy 11 first buildings
             for (int j = 1; j <= 11; j++)
             {
-                Thread.Sleep(50);
+                Thread.Sleep(automaticBuyWaitDelay);
+
                 for (int j2 = 0; j2 < 10; j2++)
                 {
-                    Thread.Sleep(15);
+                    Thread.Sleep(automaticBuyClickDelay);
                     LeftMouseClick(xPos, yPos - j * distanteBetweenBuildings);
                 }
             }
 
+            // return scroll to the top and mouse to original position 
             ScrollMouse(xPos, yPos, scrollMaximumDistancePositive);
-            SetCursorPos(xPos, yPos);
+            SetCursorPos((int) originalMousePosition.X, (int) originalMousePosition.Y);
         }
 
         private void checkBarrelRoll(object sender, RoutedEventArgs e)

@@ -31,7 +31,7 @@
         <TextBlock x:Name="AuthorName" HorizontalAlignment="Right" Margin="0,0,50,64" Text="Angel Canovas" TextWrapping="Wrap" VerticalAlignment="Bottom"/>
         <TextBlock x:Name="GitlabTittle" HorizontalAlignment="Right" Margin="0,0,180,25" Text="Gitlab:" TextWrapping="Wrap" VerticalAlignment="Bottom" FontWeight="Bold" FontSize="16"/>
         <TextBlock HorizontalAlignment="Right" Margin="0,0,50,27" Text="@AngelCanovas" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="11"/>
-        <TextBlock x:Name="versionTextBox" HorizontalAlignment="Left" Margin="670,25,0,0" Text="V 1.7" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" FontWeight="Bold" FontFamily="Segoe UI Black"/>
+        <TextBlock x:Name="versionTextBox" HorizontalAlignment="Left" Margin="670,25,0,0" Text="V 1.7.2" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" FontWeight="Bold" FontFamily="Segoe UI Black"/>
         <TextBlock x:Name="xPositionLabel" HorizontalAlignment="Left" Margin="315,90,0,0" Text="(Pixels) Width:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" RenderTransformOrigin="-0.12,0.557"/>
         <CheckBox x:Name="fixPositionCheckBox" Content="Fix position for Golden cookie" HorizontalAlignment="Left" Margin="50,90,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Checked="checkFixPosition" Unchecked="uncheckFixPosition"/>
         <TextBox x:Name="xPositionTextBox" Text="{Binding XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="410,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.502,0.868" MinWidth="50" FontSize="14"/>
