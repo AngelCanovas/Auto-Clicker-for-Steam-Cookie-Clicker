@@ -6,7 +6,7 @@ Compatible and tested for Steam game Cookie Clicker.
 
 Junior developer project. Please be aware of bugs :)
 
-![imagen](https://user-images.githubusercontent.com/56929468/132416539-942cb244-edb0-4fa6-bbe7-d25cfdb486d4.png)
+![imagen](https://user-images.githubusercontent.com/56929468/132563295-4fbf4703-4cc6-40a0-a2ea-18175333952c.png)
 
 
 # Features
@@ -22,5 +22,6 @@ Junior developer project. Please be aware of bugs :)
 # More to come (Hopefully)
 - Make the pixel counts of the features resposive with the screen resolution
 - Add/Remove delay between clicks with +/-
+- Default hotkey to stop the auto clicker like F6
 - Improve visual graphics & Optimizations
 - Solve issue: Can't stop the clicker instantally when press the bind key while barrel roll, golden click or automated buyer active
