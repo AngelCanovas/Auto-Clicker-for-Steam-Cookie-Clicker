@@ -7,50 +7,74 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="850" Loaded="MainWindow_Loaded" ResizeMode="NoResize">
     <Grid x:Name="myGrid">
-        <TextBlock x:Name="tittleTextBox" TextWrapping="Wrap" HorizontalAlignment="Left" Margin="120,20,0,0" FontWeight="Bold" FontSize="28" TextDecorations="{x:Null}" VerticalAlignment="Top" Foreground="#FF006DAC" Text="Auto Clicker for Steam Cookie Clicker" FontStyle="Normal" FontFamily="Segoe UI Black"/>
-        <TextBox x:Name="sleepMillisTextBox" Text="{Binding SleepTimeMillis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" TextWrapping="Wrap" Margin="350,0,0,25" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" MinWidth="50" MinHeight="10"/>
-        <TextBlock x:Name="delayTextBlock" HorizontalAlignment="Left" Margin="50,0,0,70" Text="Initial delay" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="16" FontWeight="Bold"/>
-        <TextBox x:Name="initialDelayTextBox" Text="{Binding InitialDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="350,0,0,65" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="120" FontSize="16"/>
-        <TextBlock x:Name="delayBetweenClicksTextBlock" HorizontalAlignment="Left" Margin="50,0,0,30" Text="Delay between clicks" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="16" FontWeight="Bold"/>
-        <TextBlock x:Name="toggleKeyTextBlock" HorizontalAlignment="Left" Margin="50,0,0,125" Text="&gt;&gt; Key to toggle on/off &lt;&lt;" TextWrapping="Wrap" VerticalAlignment="Bottom" FontWeight="Bold" FontSize="17"/>
-        <TextBox x:Name="keyNameTextBox" TextWrapping="Wrap" Margin="500,0,0,120" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="16" MinWidth="50" MinHeight="10"/>
-        <Button x:Name="setKeyButton" Content="SET" HorizontalAlignment="Right" Margin="0,0,150,120" VerticalAlignment="Bottom" FontSize="16" Padding="15,5,15,5" Click="setKeyToggle" FontWeight="Bold" UseLayoutRounding="False">
+        <Grid.Background>
+            <ImageBrush ImageSource="/background_white.jpg" Opacity="0.3"/>
+        </Grid.Background>
+        <TextBlock x:Name="tittleTextBox" TextWrapping="Wrap" HorizontalAlignment="Left" Margin="120,25,0,0" FontWeight="Bold" FontSize="24" TextDecorations="{x:Null}" VerticalAlignment="Top" Foreground="#FF006DAC" Text="Auto Clicker for Steam Cookie Clicker" FontStyle="Normal" FontFamily="Segoe UI Black"/>
+        <TextBox x:Name="sleepMillisTextBox" Text="{Binding SleepTimeMillis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" TextWrapping="Wrap" Margin="310,152,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="50" MinHeight="10"/>
+        <TextBlock x:Name="delayTextBlock" HorizontalAlignment="Left" Margin="450,150,0,0" Text="Initial delay:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
+        <TextBox x:Name="initialDelayTextBox" Text="{Binding InitialDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="720,152,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MinHeight="10" MinWidth="50"/>
+        <TextBlock x:Name="delayBetweenClicksTextBlock" HorizontalAlignment="Left" Margin="50,150,0,0" Text="Delay between clicks:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
+        <TextBlock x:Name="toggleKeyTextBlock" HorizontalAlignment="Left" Margin="50,98,0,0" Text="&gt;&gt; Key to toggle on/off &lt;&lt;" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" FontSize="16"/>
+        <TextBox x:Name="keyNameTextBox" TextWrapping="Wrap" Margin="520,100,0,120" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14" MinWidth="50" MinHeight="10"/>
+        <Button x:Name="setKeyButton" Content="SET" HorizontalAlignment="Left" Margin="640,95,0,0" VerticalAlignment="Top" FontSize="14" Padding="15,5,15,5" Click="setKeyToggle" FontWeight="Bold" UseLayoutRounding="False">
             <Button.Background>
                 <SolidColorBrush Color="#FFAADAAC" Opacity="1"/>
             </Button.Background>
         </Button>
-        <Button x:Name="clearKeyButton" Content="CLEAR" HorizontalAlignment="Right" Margin="0,0,50,120" VerticalAlignment="Bottom" FontSize="16" Padding="15,5,15,5" Click="clearKeyToggle" FontWeight="Bold">
+        <Button x:Name="clearKeyButton" Content="CLEAR" HorizontalAlignment="Left" Margin="720,95,0,0" VerticalAlignment="Top" FontSize="14" Padding="15,5,15,5" Click="clearKeyToggle" FontWeight="Bold">
             <Button.Background>
                 <SolidColorBrush Color="#FFAADAD6" Opacity="1"/>
             </Button.Background>
         </Button>
-        <TextBlock x:Name="Explication1" HorizontalAlignment="Left" Margin="290,0,0,125" Text="( Click SET and press a key )" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="15" Padding="0,0,0,0"/>
-        <TextBlock x:Name="Explication2" HorizontalAlignment="Left" Margin="150,0,0,70" Text="( milliseconds before Start )" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="14"/>
-        <TextBlock x:Name="Explication3" HorizontalAlignment="Left" Margin="225,0,0,30" Text="( milliseconds )" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="14"/>
-        <TextBlock x:Name="AuthorTittle" HorizontalAlignment="Right" Margin="0,0,180,60" Text="Author:" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="18" FontWeight="Bold"/>
-        <TextBlock x:Name="AuthorName" HorizontalAlignment="Right" Margin="0,0,50,64" Text="Angel Canovas" TextWrapping="Wrap" VerticalAlignment="Bottom"/>
-        <TextBlock x:Name="GitlabTittle" HorizontalAlignment="Right" Margin="0,0,180,25" Text="Gitlab:" TextWrapping="Wrap" VerticalAlignment="Bottom" FontWeight="Bold" FontSize="16"/>
-        <TextBlock HorizontalAlignment="Right" Margin="0,0,50,27" Text="@AngelCanovas" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="11"/>
-        <TextBlock x:Name="versionTextBox" HorizontalAlignment="Left" Margin="670,25,0,0" Text="V 1.7.2" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" FontWeight="Bold" FontFamily="Segoe UI Black"/>
-        <TextBlock x:Name="xPositionLabel" HorizontalAlignment="Left" Margin="315,90,0,0" Text="(Pixels) Width:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" RenderTransformOrigin="-0.12,0.557"/>
-        <CheckBox x:Name="fixPositionCheckBox" Content="Fix position for Golden cookie" HorizontalAlignment="Left" Margin="50,90,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Checked="checkFixPosition" Unchecked="uncheckFixPosition"/>
-        <TextBox x:Name="xPositionTextBox" Text="{Binding XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="410,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.502,0.868" MinWidth="50" FontSize="14"/>
-        <TextBlock x:Name="yPositionLabel" HorizontalAlignment="Left" Margin="500,90,0,0" Text="Heigth:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14"/>
-        <TextBox x:Name="yPositionTextBox" Text="{Binding YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="550,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" MinWidth="50"/>
-        <Button x:Name="clearPositionButton" Content="Reset" HorizontalAlignment="Right" Margin="0,80,100,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Padding="10,5,10,5" Click="resetGoldenCookiePosition"/>
-        <Button x:Name="testButton" Content="Barrel Roll!" HorizontalAlignment="Right" Margin="0,145,100,0" VerticalAlignment="Top" FontSize="16" Click="doABarrelRoll" FontWeight="Bold" Padding="10,5,10,5"/>
-        <CheckBox x:Name="barrelRollCheckBox" Content="Barrel roll to clean wrinklers" HorizontalAlignment="Left" Margin="50,140,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Checked="checkBarrelRoll" Unchecked="uncheckBarrelRoll"/>
-        <TextBlock x:Name="barrelRollTextBlock" HorizontalAlignment="Left" Margin="310,130,0,0" Text="Do it every (seconds)" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14"/>
-        <TextBox x:Name="barrelRollTextBox" Text="{Binding BarrelRollDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="470,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" MinWidth="50" MinHeight="10" PreviewTextInput="NumberValidationTextBox"/>
-        <TextBlock x:Name="radiusTextBlock" HorizontalAlignment="Left" Margin="310,160,0,0" Text="Circle radius (pixels)" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14"/>
-        <TextBox x:Name="radiusTextBox" Text="{Binding BarrelRollRadius, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="470,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MinHeight="10" MinWidth="50" FontSize="14" PreviewTextInput="NumberValidationTextBox"/>
-        <CheckBox x:Name="goldenScanCheckBox" Content="Click golden cookies" HorizontalAlignment="Left" Margin="50,210,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="16" Checked="checkGoldenScan" Unchecked="uncheckGoldenScan"/>
-        <TextBlock x:Name="goldenWarningTextBlock" HorizontalAlignment="Left" Margin="240,210,0,0" Text="* For it to work mute all the buildings before *" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" TextDecorations="{x:Null}" RenderTransformOrigin="-0.002,1.171"/>
-        <TextBox x:Name="goldenScanTextBox" Text="{Binding GoldenScanDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="700,210,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" MinHeight="10" MinWidth="50" PreviewTextInput="NumberValidationTextBox"/>
-        <TextBlock x:Name="goldenScanTextBlock" HorizontalAlignment="Left" Margin="550,210,0,0" Text="Do it every (seconds)" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14"/>
-        <CheckBox x:Name="automaticModeCheckBox" Content="Buy upgrades automatically!" HorizontalAlignment="Left" Margin="50,260,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Checked="checkAutomaticMode" Unchecked="uncheckAutomaticMode"/>
-        <TextBlock x:Name="automaticModeTextBlock" HorizontalAlignment="Left" Margin="320,260,0,0" Text="Do it every ( seconds )" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14"/>
-        <TextBox x:Name="automaticModeTextBox" Text="{Binding AutomaticModeDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="500,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" MinHeight="10" MinWidth="50" PreviewTextInput="NumberValidationTextBox"/>
-        <CheckBox x:Name="disableSwitchBuy" Content="Disable buy switchs" HorizontalAlignment="Left" Margin="600,260,0,0" VerticalAlignment="Top" FontSize="14" Checked="checkDisableSwitchBuy" Unchecked="uncheckDisableSwitchBuy"/>
+        <TextBlock x:Name="Explication1" HorizontalAlignment="Left" Margin="275,100,0,0" Text="( Use F6 or click SET and press a key )" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Padding="0,0,0,0"/>
+        <TextBlock x:Name="Explication2" HorizontalAlignment="Left" Margin="550,152,0,0" Text="( milliseconds before Start )" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock x:Name="Explication3" HorizontalAlignment="Left" Margin="210,152,0,0" Text="( milliseconds )" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock x:Name="versionTextBox" HorizontalAlignment="Left" Margin="650,30,0,0" Text="V 1.8" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" FontFamily="Segoe UI Black"/>
+        <TextBlock x:Name="modifiersTextBlock" HorizontalAlignment="Left" Margin="75,200,0,0" Text="Auto clicker modifiers" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Normal"/>
+        <Grid x:Name="modifiersGrid" Margin="40,220,40,40">
+            <Border BorderThickness="1">
+                <Border.BorderBrush>
+                    <SolidColorBrush Color="Black" Opacity="0.3"/>
+                </Border.BorderBrush>
+            </Border>
+            
+            <!-- Fix Position -->
+            <CheckBox x:Name="fixPositionCheckBox" Content="Fix position for Golden cookie" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Checked="checkFixPosition" Unchecked="uncheckFixPosition"/>
+            <TextBlock x:Name="xPositionLabel" HorizontalAlignment="Left" Margin="270,20,0,0" Text="(Pixels) Width:" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="-0.12,0.557"/>
+            <TextBox x:Name="xPositionTextBox" Text="{Binding XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="370,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.502,0.868" MinWidth="50"/>
+            <TextBlock x:Name="yPositionLabel" HorizontalAlignment="Left" Margin="450,20,0,0" Text="Heigth:" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <TextBox x:Name="yPositionTextBox" Text="{Binding YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="520,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MinWidth="50"/>
+            <Button x:Name="clearPositionButton" Content="Reset" HorizontalAlignment="Left" Margin="650,15,0,0" VerticalAlignment="Top" FontWeight="Bold" Padding="10,5,10,5" Click="resetGoldenCookiePosition"/>
+            
+            <!-- Barrel Roll -->            
+            <CheckBox x:Name="barrelRollCheckBox" Content="Barrel roll to clean wrinklers" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Checked="checkBarrelRoll" Unchecked="uncheckBarrelRoll"/>
+            <TextBlock x:Name="barrelRollTextBlock" HorizontalAlignment="Left" Margin="240,70,0,0" Text="Do it every (seconds)" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <TextBox x:Name="barrelRollTextBox" Text="{Binding BarrelRollDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="370,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MinWidth="50" MinHeight="10" PreviewTextInput="NumberValidationTextBox"/>
+            <TextBlock x:Name="radiusTextBlock" HorizontalAlignment="Left" Margin="450,70,0,0" Text="Circle radius (pixels)" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <TextBox x:Name="radiusTextBox" Text="{Binding BarrelRollRadius, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="580,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MinHeight="10" MinWidth="50" PreviewTextInput="NumberValidationTextBox"/>
+            <Button x:Name="testButton" Content="Barrel Roll!" HorizontalAlignment="Left" Margin="650,65,0,0" VerticalAlignment="Top" Click="doABarrelRoll" FontWeight="Bold" Padding="10,5,10,5"/>
+            
+            <!-- Golden cookies -->
+            <CheckBox x:Name="goldenScanCheckBox" Content="Click golden cookies" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="14" Checked="checkGoldenScan" Unchecked="uncheckGoldenScan"/>
+            <TextBlock x:Name="goldenWarningTextBlock" HorizontalAlignment="Left" Margin="190,120,0,0" Text="* For it to work mute all the buildings before *" TextWrapping="Wrap" VerticalAlignment="Top" TextDecorations="{x:Null}" RenderTransformOrigin="-0.002,1.171"/>            
+            <TextBlock x:Name="goldenScanTextBlock" HorizontalAlignment="Left" Margin="450,120,0,0" Text="Do it every (seconds)" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <TextBox x:Name="goldenScanTextBox" Text="{Binding GoldenScanDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="580,120,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MinHeight="10" MinWidth="50" PreviewTextInput="NumberValidationTextBox"/>
+            <Button x:Name="goldenClickButton" Content="Golden Click!" HorizontalAlignment="Left" Margin="650,115,0,0" VerticalAlignment="Top" Padding="10,5,10,5" FontWeight="Bold" Click="doAGoldenScan"/>
+            
+            <!-- Auto mode -->
+            <CheckBox x:Name="automaticModeCheckBox" Content="Buy upgrades automatically!" HorizontalAlignment="Left" Margin="10,170,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Checked="checkAutomaticMode" Unchecked="uncheckAutomaticMode"/>
+            <TextBlock x:Name="automaticModeTextBlock" HorizontalAlignment="Left" Margin="240,170,0,0" Text="Do it every ( seconds )" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <TextBox x:Name="automaticModeTextBox" Text="{Binding AutomaticModeDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="370,170,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MinHeight="10" MinWidth="50" PreviewTextInput="NumberValidationTextBox" RenderTransformOrigin="0.3,2.992"/>
+            <CheckBox x:Name="disableSwitchBuy" Content="Disable buy switchs" HorizontalAlignment="Left" Margin="450,170,0,0" VerticalAlignment="Top" Checked="checkDisableSwitchBuy" Unchecked="uncheckDisableSwitchBuy"/>
+            <Button x:Name="autoBuyClickButton" Content="Auto Buy!" HorizontalAlignment="Left" Margin="650,165,0,0" VerticalAlignment="Top" Padding="10,5,10,5" FontWeight="Bold" Click="doAUpgradeBuy"/>
+        </Grid>
+
+        <TextBlock x:Name="AuthorTittle" HorizontalAlignment="Left" Margin="70,0,0,10" Text="Author:" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="14" FontWeight="Bold"/>
+        <TextBlock x:Name="AuthorName" HorizontalAlignment="Left" Margin="150,0,0,10" Text="Angel Canovas" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="11"/>
+        <TextBlock x:Name="GitlabTittle" HorizontalAlignment="Left" Margin="350,0,0,10" Text="Gitlab:" TextWrapping="Wrap" VerticalAlignment="Bottom" FontWeight="Bold"/>
+        <TextBlock x:Name="GitlabUserName" HorizontalAlignment="Left" Margin="420,0,0,10" Text="@AngelCanovas" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="10"/>
+        <TextBlock x:Name="TwitterTittle" HorizontalAlignment="Left" Margin="620,0,0,10" Text="Twitter:" TextWrapping="Wrap" VerticalAlignment="Bottom" FontWeight="Bold"/>
+        <TextBlock x:Name="TwitterNick" HorizontalAlignment="Left" Margin="700,0,0,10" Text="@acanovas_dev" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="10"/>
     </Grid>
 </Window>

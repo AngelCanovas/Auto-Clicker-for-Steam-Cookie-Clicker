@@ -66,7 +66,7 @@ namespace Cookie_Clicker
         private DispatcherTimer automaticModeDispatcherTimer;
         private Thread Clicker;
         private bool isKeyToggleAllowed = false;
-        private Key toggleKey = Key.RightCtrl; // default key Right Control
+        private Key toggleKey = Key.F6; // default toggle key
 
         // constants
         private const int HOTKEY_ID = 9000;
