@@ -8,12 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="background_white.jpg" />
-    <None Remove="cookie.jpg" />
-    <None Remove="cookie2 %282%29.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="background_white.jpg" />
   </ItemGroup>
 

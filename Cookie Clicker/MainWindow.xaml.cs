@@ -29,17 +29,17 @@ namespace Cookie_Clicker
         public bool IsDisabledSwitchBuy { get; set; }
 
         public bool canAutoClickerStart = false;
-        //bool canSetGoldenCookiePosition = false;
-        //bool canSetGoldenScan = false;
         public bool toggleAutoClickerState = false;
 
         // variables for Barrel Roll
+        private static bool toggleBarrelRoll = false;
         private Point originalMousePosition;
         private int rotationSteps = 36 * 2;
         private int rotationCliksPerStep = 4;
         private int rotationClickDelay = 5;
 
         // variables for golden auto scan 
+        private static bool toggleGoldenScan = false;
         private int goldenClickDelay = 5;
         private int goldenPixelStepHorizontal = 30;
         private int goldenPixelStepVertical = 30;
@@ -47,6 +47,7 @@ namespace Cookie_Clicker
         private Point goldenEndPoint = new Point(1580, 1010);
 
         // variables for auto buy upgrader
+        private static bool toggleAutoBuy = false;
         private Point automaticBuyStartPoint = new Point(1625, 1005);
         private int automaticBuyClickDelay = 10;
         private int automaticBuyWaitDelay = 30;
@@ -65,6 +66,9 @@ namespace Cookie_Clicker
         private DispatcherTimer goldenDispatcherTimer;
         private DispatcherTimer automaticModeDispatcherTimer;
         private Thread Clicker;
+        private Thread barrelRollThread;
+        private Thread goldenCookieThread;
+        private Thread autoBuyThread;
         private bool isKeyToggleAllowed = false;
         private Key toggleKey = Key.F6; // default toggle key
 
@@ -107,18 +111,18 @@ namespace Cookie_Clicker
         {
             InitializeComponent();
             this.DataContext = this;
-            SleepTimeMillis = 15;
+            SleepTimeMillis = 10;
             InitialDelay = 100;
             IsFixPosition = false;
             XPosition = 290;
             YPosition = 420;
-            BarrelRollDelay = 200;
+            BarrelRollDelay = 3600;
             BarrelRollRadius = 170;
             IsBarrelRollCheck = false;
             IsGoldenScanCheck = false;
             GoldenScanDelay = 60;
             IsAutomaticModeCheck = false;
-            AutomaticModeDelay = 15;
+            AutomaticModeDelay = 30;
             IsDisabledSwitchBuy = false;
         }
 
@@ -128,8 +132,10 @@ namespace Cookie_Clicker
             _windowHandle = new WindowInteropHelper(this).Handle;
             _source = HwndSource.FromHwnd(_windowHandle);
             _source.AddHook(HwndHook);
-            RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_NONE, (uint) KeyInterop.VirtualKeyFromKey(toggleKey));
 
+            RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_NONE, (uint) KeyInterop.VirtualKeyFromKey(toggleKey));
+            RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_NONE, (uint) KeyInterop.VirtualKeyFromKey(Key.F7));
+            RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_NONE, (uint) KeyInterop.VirtualKeyFromKey(Key.F8));
             canAutoClickerStart = true;
         }
         protected override void OnClosed(EventArgs e)
@@ -234,6 +240,14 @@ namespace Cookie_Clicker
                                     }
                                 }
                             }
+                            else if (vkey == KeyInterop.VirtualKeyFromKey(Key.F7))
+                            {
+                                handleGoldenDispatcherTimer(null, null);
+                            }
+                            else if (vkey == KeyInterop.VirtualKeyFromKey(Key.F8))
+                            {
+                                handleAutomaticModeDispatcherTimer(null, null);
+                            }
                             handled = true;
                             break;
                     }
@@ -264,23 +278,83 @@ namespace Cookie_Clicker
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            Stop();
-            doABarrelRoll(null, null);
-            Start();
+            if (toggleBarrelRoll)
+            {
+                toggleBarrelRoll = false;
+                if (barrelRollThread != null) { barrelRollThread.Join(); }
+            }
+            else
+            {
+                toggleBarrelRoll = true;
+                if (toggleAutoClickerState)
+                {
+                    Stop();
+                    barrelRollThread = new Thread(callABarrelRoll);
+                    barrelRollThread.IsBackground = true;
+                    barrelRollThread.Start();
+                    Start();
+                }
+                else
+                {
+                    barrelRollThread = new Thread(callABarrelRoll);
+                    barrelRollThread.IsBackground = true;
+                    barrelRollThread.Start();
+                }
+            }
         }
 
         private void handleGoldenDispatcherTimer(object sender, EventArgs e)
         {
-            Stop();
-            doAGoldenScan(null, null);
-            Start();
+            if (toggleGoldenScan)
+            {
+                toggleGoldenScan = false;
+                if (goldenCookieThread != null) { goldenCookieThread.Join(); }
+            }
+            else
+            {
+                toggleGoldenScan = true;
+                if (toggleAutoClickerState)
+                {
+                    Stop();
+                    goldenCookieThread = new Thread(callAGoldenScan);
+                    goldenCookieThread.IsBackground = true;
+                    goldenCookieThread.Start();
+                    Start();
+                }
+                else
+                {
+                    goldenCookieThread = new Thread(callAGoldenScan);
+                    goldenCookieThread.IsBackground = true;
+                    goldenCookieThread.Start();
+                }
+            }
         }
 
         private void handleAutomaticModeDispatcherTimer(object sender, EventArgs e)
         {
-            Stop();
-            doAUpgradeBuy(null, null);
-            Start();
+            if (toggleAutoBuy)
+            {
+                toggleAutoBuy = false;
+                if (autoBuyThread != null) { autoBuyThread.Join(); }
+            }
+            else
+            {
+                toggleAutoBuy = true;
+                if (toggleAutoClickerState)
+                {
+                    Stop();
+                    autoBuyThread = new Thread(callAUpgradeBuy);
+                    autoBuyThread.IsBackground = true;
+                    autoBuyThread.Start();
+                    Start();
+                }
+                else
+                {
+                    autoBuyThread = new Thread(callAUpgradeBuy);
+                    autoBuyThread.IsBackground = true;
+                    autoBuyThread.Start();
+                }
+            }
         }
 
         private void doAClick()
@@ -398,11 +472,13 @@ namespace Cookie_Clicker
         private void doABarrelRoll(object sender, RoutedEventArgs e)
         {
             originalMousePosition = GetMousePosition();
+            toggleBarrelRoll = true;
             int increment = 360 / rotationSteps;
             double theta, xPos, yPos;
 
-            for (int i = 0; i < 360; i += increment)
+            for (int i = 0; i < 360 && toggleBarrelRoll; i += increment)
             {
+                // if (!toggleBarrelRoll) { break; }
                 theta = i * Math.PI / 180;
                 xPos = XPosition + BarrelRollRadius * Math.Cos(theta);
                 yPos = YPosition + BarrelRollRadius * Math.Sin(theta);
@@ -414,16 +490,25 @@ namespace Cookie_Clicker
                 }
             }
             SetCursorPos((int) originalMousePosition.X, (int) originalMousePosition.Y);
+            toggleBarrelRoll = false;
+        }
+
+        private void callABarrelRoll()
+        {
+            doABarrelRoll(null, null);
         }
 
         private void doAGoldenScan(object sender, RoutedEventArgs e)
         {
             originalMousePosition = GetMousePosition();
+            toggleGoldenScan = true;
 
-            for (int y = (int)goldenStartPoint.Y; y < (int)goldenEndPoint.Y; y += goldenPixelStepVertical)
+            for (int y = (int)goldenStartPoint.Y; y < (int)goldenEndPoint.Y && toggleGoldenScan; y += goldenPixelStepVertical)
             {
+                //if (!toggleGoldenScan) { break; }
                 for (int x = (int)goldenStartPoint.X; x < (int)goldenEndPoint.X; x += goldenPixelStepHorizontal)
                 {
+                    //if (!toggleGoldenScan) { break; }
                     if (x < 90 && y > 880) { continue; } // avoid Klumbor in the left bottom side and season companions
 
                     Thread.Sleep(goldenClickDelay);
@@ -432,11 +517,18 @@ namespace Cookie_Clicker
             }
 
             SetCursorPos((int)originalMousePosition.X, (int)originalMousePosition.Y);
+            toggleGoldenScan = false;
+        }
+
+        private void callAGoldenScan()
+        {
+            doAGoldenScan(null, null);
         }
 
         private void doAUpgradeBuy(object sender, RoutedEventArgs e)
         {
             originalMousePosition = GetMousePosition();
+            toggleAutoBuy = true;
             int xPos = (int) automaticBuyStartPoint.X;
             int yPos = (int) automaticBuyStartPoint.Y;
 
@@ -444,8 +536,9 @@ namespace Cookie_Clicker
             ScrollMouse(xPos, yPos, scrollMaximumDistancePositive);
 
             // Buy upgrades first to better cookies/sec scaling
-            for (int k = 0; k < 15; k++)
+            for (int k = 0; k < 15 && toggleAutoBuy; k++)
             {
+                //if (!toggleAutoBuy) { break; }
                 Thread.Sleep(automaticBuyWaitDelayUpgrades);
                 LeftMouseClick(xPos, yPos - 11 * distanteBetweenBuildings - distanteToUpgrades);
             }
@@ -456,8 +549,9 @@ namespace Cookie_Clicker
                 // Scroll to the top
                 ScrollMouse(xPos, yPos, scrollMaximumDistancePositive);
 
-                for (int l = 0; l < 3; l++)
+                for (int l = 0; l < 3 && toggleAutoBuy; l++)
                 {
+                    //if (!toggleAutoBuy) { break; }
                     Thread.Sleep(automaticBuyWaitDelayUpgrades);
                     LeftMouseClick(xPos, yPos - 11 * distanteBetweenBuildings - distanteToUpgrades - distanceBetweenUpgradeAndSwitches);
                 }
@@ -467,8 +561,9 @@ namespace Cookie_Clicker
             ScrollMouse(xPos, yPos, scrollMaximumDistanceNegative);
 
             // Buy last buildings upgrades
-            for (int i = 1; i <= 8 ; i++)
+            for (int i = 1; i <= 8 && toggleAutoBuy; i++)
             {
+                //if (!toggleAutoBuy) { break; }
                 Thread.Sleep(automaticBuyWaitDelay);
                 ScrollMouse(xPos, yPos, distanceWheelScrollForLastBuildings);
 
@@ -483,8 +578,9 @@ namespace Cookie_Clicker
             ScrollMouse(xPos, yPos, scrollMaximumDistancePositive);
 
             // Buy 11 first buildings
-            for (int j = 1; j <= 11; j++)
+            for (int j = 1; j <= 11 && toggleAutoBuy; j++)
             {
+                //if (!toggleAutoBuy) { break; }
                 Thread.Sleep(automaticBuyWaitDelay);
 
                 for (int j2 = 0; j2 < 10; j2++)
@@ -497,8 +593,13 @@ namespace Cookie_Clicker
             // return scroll to the top and mouse to original position 
             ScrollMouse(xPos, yPos, scrollMaximumDistancePositive);
             SetCursorPos((int) originalMousePosition.X, (int) originalMousePosition.Y);
+            toggleAutoBuy = false;
         }
 
+        private void callAUpgradeBuy()
+        {
+            doAUpgradeBuy(null, null);
+        }
         private void checkBarrelRoll(object sender, RoutedEventArgs e)
         {
             IsBarrelRollCheck = true;
@@ -537,6 +638,21 @@ namespace Cookie_Clicker
         private void uncheckDisableSwitchBuy(object sender, RoutedEventArgs e)
         {
             IsDisabledSwitchBuy = false;
+        }
+
+        private void doBarrelRollAction(object sender, RoutedEventArgs e)
+        {
+            dispatcherTimer_Tick(null, null);
+        }
+
+        private void doGoldenScanAction(object sender, RoutedEventArgs e)
+        {
+            handleGoldenDispatcherTimer(null, null);
+        }
+
+        private void doAutoBuyAction(object sender, RoutedEventArgs e)
+        {
+            handleAutomaticModeDispatcherTimer(null, null);
         }
     }
 }
