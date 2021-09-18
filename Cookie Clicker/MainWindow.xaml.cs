@@ -9,16 +9,13 @@ using System.Windows.Threading;
 
 namespace Cookie_Clicker
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public int SleepTimeMillis { get; set; }
         public int InitialDelay { get; set; }
         public bool IsFixPosition { get; set; }
-        public double XPosition { get; set; }
-        public double YPosition { get; set; }
+        public int XPosition { get; set; }
+        public int YPosition { get; set; }
         public int BarrelRollDelay { get; set; }
         public int BarrelRollRadius { get; set; }
         public bool IsBarrelRollCheck { get; set; }
@@ -30,6 +27,10 @@ namespace Cookie_Clicker
 
         public bool canAutoClickerStart = false;
         public bool toggleAutoClickerState = false;
+        public int screenWidth = (int) SystemParameters.FullPrimaryScreenWidth;
+        public int screenHeight = (int) SystemParameters.FullPrimaryScreenHeight;
+        public double scaleWidth = SystemParameters.FullPrimaryScreenWidth / 1920;
+        public double scaleHeight = SystemParameters.FullPrimaryScreenHeight / 1080;
 
         // variables for Barrel Roll
         private static bool toggleBarrelRoll = false;
@@ -41,23 +42,23 @@ namespace Cookie_Clicker
         // variables for golden auto scan 
         private static bool toggleGoldenScan = false;
         private int goldenClickDelay = 5;
-        private int goldenPixelStepHorizontal = 30;
-        private int goldenPixelStepVertical = 30;
-        private Point goldenStartPoint = new Point(5, 180);
-        private Point goldenEndPoint = new Point(1580, 1010);
+        private int goldenPixelStepHorizontal;
+        private int goldenPixelStepVertical;
+        private Point goldenStartPoint;
+        private Point goldenEndPoint;
 
         // variables for auto buy upgrader
         private static bool toggleAutoBuy = false;
-        private Point automaticBuyStartPoint = new Point(1625, 1005);
+        private Point automaticBuyStartPoint;
         private int automaticBuyClickDelay = 10;
-        private int automaticBuyWaitDelay = 30;
+        private int automaticBuyWaitDelay = 25;
         private int automaticBuyWaitDelayUpgrades = 50;
-        private int distanteBetweenBuildings = 64; // Pixels
+        private int distanteBetweenBuildings = 64; // don't change between screen sizes
         private int distanteToUpgrades = 108;
         private int distanceBetweenUpgradeAndSwitches = 76;
-        private int distanceWheelScrollForLastBuildings = 76; // same as between upgrades?
-        private int scrollMaximumDistancePositive = 140 * 7;
-        private int scrollMaximumDistanceNegative = -(140 * 7);
+        private int distanceWheelScrollForLastBuildings = 76; // same pixels as between upgrades
+        private int scrollMaximumDistancePositive;
+        private int scrollMaximumDistanceNegative;
 
         // handle variables for key binding and timers
         private IntPtr _windowHandle;
@@ -81,7 +82,7 @@ namespace Cookie_Clicker
         private const uint MOD_WIN = 0x0008; //WINDOWS
         public const int MOUSEEVENTF_LEFTDOWN = 0x02; // Mouse left click down
         public const int MOUSEEVENTF_LEFTUP = 0x04; // Mouse left click up
-        public const int MOUSEEVENTF_WHEEL = 0x0800; // Mouse wheel        
+        public const int MOUSEEVENTF_WHEEL = 0x0800; // Mouse wheel
 
         [DllImport("user32.dll")]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
@@ -114,16 +115,29 @@ namespace Cookie_Clicker
             SleepTimeMillis = 10;
             InitialDelay = 100;
             IsFixPosition = false;
-            XPosition = 290;
-            YPosition = 420;
             BarrelRollDelay = 3600;
-            BarrelRollRadius = 170;
             IsBarrelRollCheck = false;
             IsGoldenScanCheck = false;
             GoldenScanDelay = 60;
             IsAutomaticModeCheck = false;
             AutomaticModeDelay = 30;
             IsDisabledSwitchBuy = false;
+
+            InitializeScreenDependantComponents();
+        }
+
+        protected void InitializeScreenDependantComponents()
+        {
+            XPosition = (int) (290 * scaleWidth);
+            YPosition = (int) (435 * scaleHeight);
+            BarrelRollRadius = 170;
+            goldenPixelStepHorizontal = 30; // if maken screen responsive, the final value may be too small or large to function correctly
+            goldenPixelStepVertical = 30;
+            goldenStartPoint = new Point(5, 180); // don't change with screen resolutions
+            goldenEndPoint = new Point(1580 * scaleWidth,  1010 * scaleHeight);
+            automaticBuyStartPoint = new Point(1625 * scaleWidth, 1005 * scaleHeight);
+            scrollMaximumDistancePositive = screenHeight;
+            scrollMaximumDistanceNegative = -screenHeight;
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -361,7 +375,7 @@ namespace Cookie_Clicker
         {
             if (IsFixPosition)
             {
-                LeftMouseClick((int) XPosition, (int) YPosition);
+                LeftMouseClick(XPosition, YPosition);
             }
             else
             {
@@ -451,8 +465,8 @@ namespace Cookie_Clicker
 
         private void resetGoldenCookiePosition(object sender, RoutedEventArgs e)
         {
-            XPosition = 300 / 1920 * SystemParameters.PrimaryScreenWidth;
-            YPosition = 400 / 1080 * SystemParameters.PrimaryScreenHeight;
+            XPosition = 290 * screenWidth / 1920;
+            YPosition = 435 * screenHeight / 1080;
             xPositionTextBox.Text = XPosition.ToString();
             yPositionTextBox.Text = YPosition.ToString();
             IsFixPosition = false;

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cookie_Clicker"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="850" Loaded="MainWindow_Loaded" ResizeMode="NoResize">
+        Title="Auto Clicker v1.9" Height="500" Width="850" Loaded="MainWindow_Loaded" ResizeMode="NoResize">
     <Grid x:Name="myGrid">
         <Grid.Background>
             <ImageBrush ImageSource="/background_white.jpg" Opacity="0.3"/>
@@ -30,9 +30,9 @@
         <TextBlock x:Name="Explication1" HorizontalAlignment="Left" Margin="275,100,0,0" Text="( Use F6 or click SET and press a key )" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Padding="0,0,0,0"/>
         <TextBlock x:Name="Explication2" HorizontalAlignment="Left" Margin="550,152,0,0" Text="( milliseconds before Start )" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBlock x:Name="Explication3" HorizontalAlignment="Left" Margin="210,152,0,0" Text="( milliseconds )" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBlock x:Name="versionTextBox" HorizontalAlignment="Left" Margin="650,30,0,0" Text="V 1.8" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" FontFamily="Segoe UI Black"/>
+        <TextBlock x:Name="versionTextBox" HorizontalAlignment="Left" Margin="650,30,0,0" Text="V 1.9" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" FontFamily="Segoe UI Black"/>
         <TextBlock x:Name="modifiersTextBlock" HorizontalAlignment="Left" Margin="75,200,0,0" Text="Auto clicker modifiers" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Normal"/>
-        <TextBlock x:Name="fKeysTextBlock" HorizontalAlignment="Left" Margin="450,200,0,0" Text="Use F7 to do a single golden click scan. F8 for a single upgrade buy." TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Normal"/>
+        <TextBlock x:Name="fKeysTextBlock" HorizontalAlignment="Left" Margin="430,200,0,0" Text="Use F7 to do a single golden click scan. F8 for a single upgrade buy." TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Normal"/>
         <Grid x:Name="modifiersGrid" Margin="40,220,40,40">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="19*"/>
