@@ -50,7 +50,8 @@
             <TextBox x:Name="xPositionTextBox" Text="{Binding XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="275,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.502,0.868" MinWidth="50" Grid.Column="1"/>
             <TextBlock x:Name="yPositionLabel" HorizontalAlignment="Left" Margin="355,20,0,0" Text="Heigth:" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1"/>
             <TextBox x:Name="yPositionTextBox" Text="{Binding YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="425,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MinWidth="50" Grid.Column="1"/>
-            <Button x:Name="clearPositionButton" Content="Reset" HorizontalAlignment="Left" Margin="555,15,0,0" VerticalAlignment="Top" FontWeight="Bold" Padding="10,5,10,5" Click="resetGoldenCookiePosition" Grid.Column="1"/>
+            <Button x:Name="setPositionButton" Content="Set" HorizontalAlignment="Left" Margin="555,15,0,0" VerticalAlignment="Top" FontWeight="Bold" Padding="5,5,5,5" Click="setGoldenCookiePosition" Grid.Column="1"/>
+            <Button x:Name="clearPositionButton" Content="Reset" HorizontalAlignment="Left" Margin="600,15,0,0" VerticalAlignment="Top" FontWeight="Bold" Padding="5,5,5,5" Click="resetGoldenCookiePosition" Grid.Column="1"/>
 
             <!-- Barrel Roll -->
             <CheckBox x:Name="barrelRollCheckBox" Content="Barrel roll to clean wrinklers" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Checked="checkBarrelRoll" Unchecked="uncheckBarrelRoll" Grid.ColumnSpan="2"/>

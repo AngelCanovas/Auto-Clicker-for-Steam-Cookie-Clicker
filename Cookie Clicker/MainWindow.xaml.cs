@@ -31,6 +31,7 @@ namespace Cookie_Clicker
         public int screenHeight = (int) SystemParameters.FullPrimaryScreenHeight;
         public double scaleWidth = SystemParameters.FullPrimaryScreenWidth / 1920;
         public double scaleHeight = SystemParameters.FullPrimaryScreenHeight / 1080;
+        // public double windowsScalePercent;
 
         // variables for Barrel Roll
         private static bool toggleBarrelRoll = false;
@@ -46,6 +47,7 @@ namespace Cookie_Clicker
         private int goldenPixelStepVertical;
         private Point goldenStartPoint;
         private Point goldenEndPoint;
+        private Point avoidKlumborPoint;
 
         // variables for auto buy upgrader
         private static bool toggleAutoBuy = false;
@@ -131,11 +133,28 @@ namespace Cookie_Clicker
             XPosition = (int) (290 * scaleWidth);
             YPosition = (int) (435 * scaleHeight);
             BarrelRollRadius = 170;
-            goldenPixelStepHorizontal = 30; // if maken screen responsive, the final value may be too small or large to function correctly
-            goldenPixelStepVertical = 30;
-            goldenStartPoint = new Point(5, 180); // don't change with screen resolutions
-            goldenEndPoint = new Point(1580 * scaleWidth,  1010 * scaleHeight);
-            automaticBuyStartPoint = new Point(1625 * scaleWidth, 1005 * scaleHeight);
+            if (screenWidth <= 600)
+            {
+                goldenPixelStepHorizontal = 20;
+                goldenPixelStepVertical = 20;
+                goldenStartPoint = new Point(5, 240);                
+            }
+            else if (screenWidth <= 800)
+            {
+                goldenPixelStepHorizontal = 25;
+                goldenPixelStepVertical = 25;
+                goldenStartPoint = new Point(5, 210);
+            }
+            else
+            {
+                goldenPixelStepHorizontal = 30; // if maken screen responsive, the final value may be too small or large to function correctly
+                goldenPixelStepVertical = 30;
+                goldenStartPoint = new Point(5, 180); // don't change with screen resolutions
+            }
+            
+            goldenEndPoint = new Point(screenWidth - 340,  screenHeight - 20 * scaleHeight);
+            avoidKlumborPoint = new Point(90, screenHeight - 200 * scaleHeight);
+            automaticBuyStartPoint = new Point(screenWidth - 295, 1005 * scaleHeight);
             scrollMaximumDistancePositive = screenHeight;
             scrollMaximumDistanceNegative = -screenHeight;
         }
@@ -463,6 +482,11 @@ namespace Cookie_Clicker
             e.Handled = regex.IsMatch(e.Text);
         }
 
+        private void setGoldenCookiePosition(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void resetGoldenCookiePosition(object sender, RoutedEventArgs e)
         {
             XPosition = 290 * screenWidth / 1920;
@@ -492,7 +516,6 @@ namespace Cookie_Clicker
 
             for (int i = 0; i < 360 && toggleBarrelRoll; i += increment)
             {
-                // if (!toggleBarrelRoll) { break; }
                 theta = i * Math.PI / 180;
                 xPos = XPosition + BarrelRollRadius * Math.Cos(theta);
                 yPos = YPosition + BarrelRollRadius * Math.Sin(theta);
@@ -519,11 +542,9 @@ namespace Cookie_Clicker
 
             for (int y = (int)goldenStartPoint.Y; y < (int)goldenEndPoint.Y && toggleGoldenScan; y += goldenPixelStepVertical)
             {
-                //if (!toggleGoldenScan) { break; }
                 for (int x = (int)goldenStartPoint.X; x < (int)goldenEndPoint.X; x += goldenPixelStepHorizontal)
                 {
-                    //if (!toggleGoldenScan) { break; }
-                    if (x < 90 && y > 880) { continue; } // avoid Klumbor in the left bottom side and season companions
+                    if (x < avoidKlumborPoint.X && y > avoidKlumborPoint.Y) { continue; } // avoid Klumbor in the left bottom side and season companions
 
                     Thread.Sleep(goldenClickDelay);
                     LeftMouseClick(x, y);
@@ -552,7 +573,6 @@ namespace Cookie_Clicker
             // Buy upgrades first to better cookies/sec scaling
             for (int k = 0; k < 15 && toggleAutoBuy; k++)
             {
-                //if (!toggleAutoBuy) { break; }
                 Thread.Sleep(automaticBuyWaitDelayUpgrades);
                 LeftMouseClick(xPos, yPos - 11 * distanteBetweenBuildings - distanteToUpgrades);
             }
@@ -565,7 +585,6 @@ namespace Cookie_Clicker
 
                 for (int l = 0; l < 3 && toggleAutoBuy; l++)
                 {
-                    //if (!toggleAutoBuy) { break; }
                     Thread.Sleep(automaticBuyWaitDelayUpgrades);
                     LeftMouseClick(xPos, yPos - 11 * distanteBetweenBuildings - distanteToUpgrades - distanceBetweenUpgradeAndSwitches);
                 }
@@ -577,7 +596,6 @@ namespace Cookie_Clicker
             // Buy last buildings upgrades
             for (int i = 1; i <= 8 && toggleAutoBuy; i++)
             {
-                //if (!toggleAutoBuy) { break; }
                 Thread.Sleep(automaticBuyWaitDelay);
                 ScrollMouse(xPos, yPos, distanceWheelScrollForLastBuildings);
 
@@ -594,7 +612,6 @@ namespace Cookie_Clicker
             // Buy 11 first buildings
             for (int j = 1; j <= 11 && toggleAutoBuy; j++)
             {
-                //if (!toggleAutoBuy) { break; }
                 Thread.Sleep(automaticBuyWaitDelay);
 
                 for (int j2 = 0; j2 < 10; j2++)
