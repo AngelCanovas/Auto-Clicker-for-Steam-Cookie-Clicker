@@ -4,9 +4,9 @@ Automatically clicks the left mouse button.
 
 Compatible and tested for Steam game Cookie Clicker.
 
-Junior developer project. Please be aware of bugs :)
+Please be aware of bugs :)
 
-![imagen](https://user-images.githubusercontent.com/56929468/132929075-4fe49fce-efe7-4bca-871b-085be7bca89a.png)
+![imagen](https://user-images.githubusercontent.com/56929468/140651809-4c0fe663-6424-41cd-bd52-f022d3122496.png)
 
 # How to use it
 - For download and use info please read the wiki: https://github.com/AngelCanovas/Auto-Clicker-for-Steam-Cookie-Clicker/wiki
